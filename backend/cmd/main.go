@@ -12,6 +12,9 @@ import (
 func main() {
 	// Initialize configuration and database connection
 	config.SetupConfig()
+	// Initialize database
+	config.InitDB()
+	defer config.CloseDB()
 
 	// Create a new Gin engine instance
 	r := gin.Default()
