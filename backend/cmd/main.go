@@ -12,7 +12,16 @@ import (
 func main() {
 	// Initialize configuration and database connection
 	config.SetupConfig()
+	// Initialize database
+	config.InitDB()
+	defer config.CloseDB()
 
+	if err := config.SeedDatabaseWithUsers(config.GetDB()); err != nil {
+		log.Fatalf("Error loading initial data: %v", err)
+	}
+	if err := config.SeedDatabaseWithApplications(config.GetDB()); err != nil {
+		log.Fatalf("Error loading initial data: %v", err)
+	}
 	// Create a new Gin engine instance
 	r := gin.Default()
 	// Enable CORS

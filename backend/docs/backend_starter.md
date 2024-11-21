@@ -1,6 +1,6 @@
-# OrgaJobSearch
+# FollowMyJobs
 
-OrgaJobSearch WIP
+FollowMyJobs WIP
 
 ## Prerequisites
 
@@ -48,6 +48,8 @@ Before running the project, make sure the following are installed on your machin
    cd ..
    docker-composer -f docker-compose.dev.yml up -d
    ```
+
+   Database seed will be automaticcly setup when the app start if needed
 
 ## Usage
 
