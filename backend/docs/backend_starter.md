@@ -49,6 +49,8 @@ Before running the project, make sure the following are installed on your machin
    docker-composer -f docker-compose.dev.yml up -d
    ```
 
+   Database seed will be automaticcly setup when the app start if needed
+
 ## Usage
 
 ### Starting the Application
