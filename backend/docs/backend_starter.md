@@ -33,13 +33,20 @@ Before running the project, make sure the following are installed on your machin
 4. Set up the environment variables as needed (e.g., for database connection). You can copy the `.env.sample` file, rename it to `.env`, and add your environment variables, or you can set the environment variables directly:
 
    ```bash
-   export DB_USER=your_database_user
-   export DB_PASSWORD=your_database_password
-   export DB_NAME=your_database_name
-   export DB_HOST=your_database_host
-   export DB_PORT=your_db_port
+   export POSTGRES_USER=your_database_user
+   export POSTGRES_PASSWORD=your_database_password
+   export POSTGRES_NAME=your_database_name
+   export POSTGRES_HOST=your_database_host
+   export POSTGRES_PORT=your_db_port
    export JWT_KEY=your_secret_key
    export SENDGRID_API_KEY=your_sendgrid_api_key
+   ```
+
+5. Start Database with docker compose
+
+   ```bash
+   cd ..
+   docker-composer -f docker-compose.dev.yml up -d
    ```
 
 ## Usage
