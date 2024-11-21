@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/R-Thibault/FollowMyJobs/backend/models"
 	_ "github.com/lib/pq"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -29,7 +30,7 @@ func InitDB() {
 
 	log.Println("Connected to the database successfully!")
 
-	if err := DB.AutoMigrate(); err != nil {
+	if err := DB.AutoMigrate(&models.User{}, &models.OTP{}, &models.Application{}); err != nil {
 		log.Fatalf("Failed to migrate the database schema: %v", err)
 	}
 	log.Println("Database schema migrated successfully!")

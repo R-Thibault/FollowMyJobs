@@ -1,6 +1,6 @@
-# OrgaJobSearch
+# FollowMyJobs
 
-OrgaJobSearch WIP
+FollowMyJobs WIP
 
 ## Prerequisites
 
