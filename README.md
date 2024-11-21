@@ -1,19 +1,18 @@
-# OrgaJobTracker
+# FollowMyJobs
 
-OrgaJobTracker is an open-source, lightweight tool designed to help job seekers organize and track their job applications. With a minimalist and user-friendly interface, it provides the essential functionality to manage the job search process and track application statuses.
+FollowMyJobs is an open-source, lightweight tool designed to help job seekers organize and track their job applications. With a minimalist and user-friendly interface, it provides the essential functionality to manage the job search process and track application statuses.
 
 ## Table of Contents
 
 - [Project Overview](#project-overview)
 - [Features](#features)
 - [Getting Started](#getting-started)
-- [Contributing](#contributing)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
 
 ## Project Overview
 
-**OrgaJobTracker** is designed for job seekers who want a simple, no-frills solution for managing their job applications. It allows users to register with basic information and track their job applications without the need for extensive data entry.
+**FollowMyJobs** is designed for job seekers who want a simple, no-frills solution for managing their job applications. It allows users to register with basic information and track their job applications without the need for extensive data entry.
 
 ## Features
 
@@ -27,7 +26,6 @@ OrgaJobTracker is an open-source, lightweight tool designed to help job seekers 
 ### Prerequisites
 
 - **Golang**: Install the latest version from [Golang's official website](https://golang.org/).
-- **Node.js**: Install Node.js and npm from [Node.js website](https://nodejs.org/).
 - **Docker**: Docker is recommended for development and deployment.
 
 ### Installation
@@ -35,8 +33,8 @@ OrgaJobTracker is an open-source, lightweight tool designed to help job seekers 
 1. **Clone the Repository**:
 
    ```bash
-   git clone https://github.com/your-username/OrgaJobTracker.git
-   cd OrgaJobTracker
+   git clone https://github.com/R-Thibault/FollowMyJobs.git
+   cd FollowMyJobs
    ```
 
 2. **Set Up Environment Variables**:
@@ -61,34 +59,12 @@ OrgaJobTracker is an open-source, lightweight tool designed to help job seekers 
    - **Backend**: Start the backend server
      ```bash
      cd backend
-     go run main.go
-     ```
-   - **Frontend**: Start the frontend server
-     ```bash
-     cd frontend
-     npm run dev
+     air
      ```
 
 ### Testing
 
-Tests will be added as the project progresses. To run tests:
-
-```bash
-# Example for backend tests
-cd backend
-go test ./...
-```
-
-## Contributing
-
-We welcome contributions to improve **OrgaJobTracker**! Here’s how you can contribute:
-
-1. **Fork the repository**.
-2. **Clone your fork** and create a new branch for your feature or bug fix.
-3. **Make your changes** and ensure your code is clean and tested.
-4. **Submit a pull request** and provide a clear description of your changes.
-
-Please see the [CONTRIBUTING.md](./CONTRIBUTING.md) for more details.
+Tests will be added as the project progresses.
 
 ## License
 
