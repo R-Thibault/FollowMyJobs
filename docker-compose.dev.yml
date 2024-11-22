@@ -1,0 +1,13 @@
+services:
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - /var/lib/postgresql/data
+    env_file:
+      - ./backend/.env
+  adminer:
+    image: adminer
+    ports:
+      - 8000:8080

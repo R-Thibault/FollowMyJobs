@@ -1,4 +1,4 @@
-# Backend Go OrgaJobTracker Code Conventions
+# Backend Go FollowMyJobs Code Conventions
 
 This document outlines the coding conventions for the Backend Go project. The goal is to ensure that the codebase remains consistent, readable, and maintainable, so that onboarding new developers is straightforward. This guide covers project structure, naming conventions, best practices, and more.
 
@@ -39,7 +39,7 @@ This document outlines the coding conventions for the Backend Go project. The go
 
       "github.com/gin-gonic/gin"
 
-      "github.com/R-Thibault/OrgaJobSearch/backend/repository"
+      "github.com/R-Thibault/FollowMyJobs/backend/repository"
   )
   ```
 
