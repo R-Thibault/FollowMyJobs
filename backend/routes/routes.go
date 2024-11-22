@@ -2,6 +2,12 @@ package routes
 
 import (
 	"github.com/R-Thibault/FollowMyJobs/backend/config"
+	"github.com/R-Thibault/FollowMyJobs/backend/controllers"
+	hashingUtils "github.com/R-Thibault/FollowMyJobs/backend/internal/hash_util"
+	tokenUtils "github.com/R-Thibault/FollowMyJobs/backend/internal/tokenGenerator_util"
+	userRepository "github.com/R-Thibault/FollowMyJobs/backend/repository/user_repository"
+	tokenService "github.com/R-Thibault/FollowMyJobs/backend/services/token_services"
+	userServices "github.com/R-Thibault/FollowMyJobs/backend/services/user_services"
 	"github.com/gin-gonic/gin"
 )
 
@@ -23,7 +29,7 @@ func SetupRoutes(router *gin.Engine) {
 	GenerateTokenService := tokenUtils.NewJWTTokenGeneratorUtil()
 
 	// Initialize Serivces
-	UserService := userServices.NewUserService(UserRepository, OTPRepository, HashingService)
+	UserService := userServices.NewUserService(UserRepository, HashingService)
 	TokenService := tokenService.NewTokenService()
 
 	// Initialize Controllers
