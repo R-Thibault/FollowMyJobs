@@ -19,9 +19,6 @@ func SetupConfig() {
 	viper.AutomaticEnv() // Automatically read environment variables
 	// Debug: Print all configuration values
 	log.Println("Loaded Configuration:")
-	for _, key := range viper.AllKeys() {
-		log.Printf("%s = %s", key, viper.GetString(key))
-	}
 }
 
 func GetConfig(key string) string {
