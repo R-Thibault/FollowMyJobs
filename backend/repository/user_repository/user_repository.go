@@ -18,6 +18,15 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 
 var _ UserRepositoryInterface = &UserRepository{}
 
+func (r *UserRepository) SaveUser(user models.User) error {
+	if r.db == nil {
+		return errors.New("database connection is nil")
+	}
+
+	//Save user in DB
+	return r.db.Create(&user).Error
+}
+
 func (r *UserRepository) GetUserByEmail(email string) (*models.User, error) {
 	if r.db == nil {
 		return nil, errors.New("database connection is nil")
@@ -57,6 +66,28 @@ func (r *UserRepository) ValidateEmail(email string) error {
 			"user_status":     "registered",
 		}).Error
 
+}
+
+func (r *UserRepository) GetUserByID(ID uint) (*models.User, error) {
+	if r.db == nil {
+		return nil, errors.New("database connection is nil")
+	}
+
+	if ID == 0 {
+		return nil, errors.New("ID cannot be zero")
+	}
+
+	var user models.User
+	result := r.db.Where("id = ?", ID).First(&user)
+
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, gorm.ErrRecordNotFound
+		}
+		return nil, result.Error
+	}
+
+	return &user, nil
 }
 
 func (r *UserRepository) GetUserByUUID(uuid string) (*models.User, error) {

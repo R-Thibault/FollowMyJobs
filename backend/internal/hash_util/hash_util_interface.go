@@ -1,4 +1,4 @@
-package utils
+package internal
 
 type HashingServiceInterface interface {
 	// HashPassword generates a hashed password using Argon2id algorithm.

@@ -25,3 +25,7 @@ var _ UserServiceInterface = &UserService{}
 func (s *UserService) GetUserByEmail(email string) (*models.User, error) {
 	return s.UserRepo.GetUserByEmail(email)
 }
+
+func (s *UserService) EmailValidation(email string) error {
+	return s.UserRepo.ValidateEmail(email)
+}
