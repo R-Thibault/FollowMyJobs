@@ -1,9 +1,11 @@
 package controllers
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
+	"github.com/R-Thibault/FollowMyJobs/backend/internal"
 	"github.com/R-Thibault/FollowMyJobs/backend/models"
 	otpServices "github.com/R-Thibault/FollowMyJobs/backend/services/otp_services"
 	registrationservices "github.com/R-Thibault/FollowMyJobs/backend/services/registration_services"
@@ -49,4 +51,41 @@ func (u *UserController) SignUp(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"success": "User registration successful !"})
 
+}
+
+func (u *UserController) ResetPassword(c *gin.Context) {
+	var requestDatas models.ResetPasswordCredentials
+	if err := c.ShouldBindJSON(&requestDatas); err != nil {
+		// If the input is invalid, respond with an error
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request data"})
+		return
+	}
+	if requestDatas.Password == requestDatas.ConfirmPassword {
+		isMatch := internal.RegexPassword(requestDatas.Password)
+		if !isMatch {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Password do not match requirement"})
+			return
+		}
+		existingUser, err := u.UserService.GetUserByEmail(requestDatas.Email)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "UserUUID do not match a user"})
+			return
+		}
+		fmt.Printf("existingUser: %v", existingUser)
+		claims, claimsErr := u.tokenService.VerifyToken(requestDatas.TokenString)
+		if claimsErr != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid token"})
+		}
+		fmt.Printf("claims: %v", claims)
+		pswdErr := u.UserService.ResetPassword(*existingUser, *claims, requestDatas.Password)
+		if pswdErr != nil {
+
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Reset password fail"})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "Password reset successfully"})
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Password and confirm do not match"})
+	}
 }
