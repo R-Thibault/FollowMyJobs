@@ -4,6 +4,7 @@ import (
 	"github.com/R-Thibault/FollowMyJobs/backend/config"
 	"github.com/R-Thibault/FollowMyJobs/backend/controllers"
 	hashingUtils "github.com/R-Thibault/FollowMyJobs/backend/internal/hash_util"
+	"github.com/R-Thibault/FollowMyJobs/backend/internal/middleware"
 	otpGeneratorUtils "github.com/R-Thibault/FollowMyJobs/backend/internal/otpGenerator_util"
 	tokenUtils "github.com/R-Thibault/FollowMyJobs/backend/internal/tokenGenerator_util"
 	otpRepository "github.com/R-Thibault/FollowMyJobs/backend/repository/otp_repository"
@@ -59,4 +60,8 @@ func SetupRoutes(router *gin.Engine) {
 	router.POST("/reset-password", UserController.ResetPassword)
 	router.POST("/send-reset-password-link", TokenController.SendResetPasswordEmail)
 	router.POST("/verify-reset-password-link", TokenController.VerifyResetPasswordToken)
+
+	//Protected routes
+	protected := router.Group("/")
+	protected.Use(middleware.AuthMiddleware())
 }
