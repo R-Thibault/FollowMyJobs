@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/R-Thibault/FollowMyJobs/backend/internal"
 	"github.com/R-Thibault/FollowMyJobs/backend/models"
 	otpServices "github.com/R-Thibault/FollowMyJobs/backend/services/otp_services"
 	registrationservices "github.com/R-Thibault/FollowMyJobs/backend/services/registration_services"
@@ -60,7 +61,11 @@ func (u *UserController) ResetPassword(c *gin.Context) {
 		return
 	}
 	if requestDatas.Password == requestDatas.ConfirmPassword {
-
+		isMatch := internal.RegexPassword(requestDatas.Password)
+		if !isMatch {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Password do not match requirement"})
+			return
+		}
 		existingUser, err := u.UserService.GetUserByEmail(requestDatas.Email)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "UserUUID do not match a user"})
@@ -69,13 +74,12 @@ func (u *UserController) ResetPassword(c *gin.Context) {
 		fmt.Printf("existingUser: %v", existingUser)
 		claims, claimsErr := u.tokenService.VerifyToken(requestDatas.TokenString)
 		if claimsErr != nil {
-			log.Printf("ERROR claims: %v", claimsErr)
 			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid token"})
 		}
 		fmt.Printf("claims: %v", claims)
 		pswdErr := u.UserService.ResetPassword(*existingUser, *claims, requestDatas.Password)
 		if pswdErr != nil {
-			log.Printf("ERROR pswd : %v", pswdErr)
+
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Reset password fail"})
 			return
 		}
