@@ -60,6 +60,54 @@ func (_m *UserServiceInterface) GetUserByEmail(email string) (*models.User, erro
 	return r0, r1
 }
 
+// GetUserByID provides a mock function with given fields: userID
+func (_m *UserServiceInterface) GetUserByID(userID uint) (*models.User, error) {
+	ret := _m.Called(userID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetUserByID")
+	}
+
+	var r0 *models.User
+	var r1 error
+	if rf, ok := ret.Get(0).(func(uint) (*models.User, error)); ok {
+		return rf(userID)
+	}
+	if rf, ok := ret.Get(0).(func(uint) *models.User); ok {
+		r0 = rf(userID)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*models.User)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(uint) error); ok {
+		r1 = rf(userID)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// ResetPassword provides a mock function with given fields: user, claims, newPassword
+func (_m *UserServiceInterface) ResetPassword(user models.User, claims models.JWTToken, newPassword string) error {
+	ret := _m.Called(user, claims, newPassword)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ResetPassword")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(models.User, models.JWTToken, string) error); ok {
+		r0 = rf(user, claims, newPassword)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // NewUserServiceInterface creates a new instance of UserServiceInterface. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
 func NewUserServiceInterface(t interface {

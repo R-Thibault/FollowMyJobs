@@ -4,6 +4,7 @@ import (
 	"github.com/R-Thibault/FollowMyJobs/backend/config"
 	"github.com/R-Thibault/FollowMyJobs/backend/controllers"
 	hashingUtils "github.com/R-Thibault/FollowMyJobs/backend/internal/hash_util"
+	"github.com/R-Thibault/FollowMyJobs/backend/internal/middleware"
 	otpGeneratorUtils "github.com/R-Thibault/FollowMyJobs/backend/internal/otpGenerator_util"
 	tokenUtils "github.com/R-Thibault/FollowMyJobs/backend/internal/tokenGenerator_util"
 	otpRepository "github.com/R-Thibault/FollowMyJobs/backend/repository/otp_repository"
@@ -37,7 +38,7 @@ func SetupRoutes(router *gin.Engine) {
 	OTPGeneratorService := otpGeneratorUtils.NewOtpGeneratorService()
 
 	// Initialize Serivces
-	UserService := userServices.NewUserService(UserRepository, HashingService)
+	UserService := userServices.NewUserService(UserRepository, OTPRepository, HashingService)
 	TokenService := tokenService.NewTokenService()
 	OTPService := otpServices.NewOTPService(UserRepository, OTPRepository, OTPGeneratorService)
 	MailerService := services.NewMailerService()
@@ -47,6 +48,7 @@ func SetupRoutes(router *gin.Engine) {
 	AuthController := controllers.NewAuthController(UserService, HashingService, TokenService, GenerateTokenService)
 	UserController := controllers.NewUserController(UserService, OTPService, TokenService, RegistrationService)
 	OTPController := controllers.NewOTPController(OTPService, MailerService, UserService)
+	TokenController := controllers.NewTokenController(TokenService, UserService, OTPService, GenerateTokenService, *MailerService)
 
 	// Public routes
 	router.POST("/login", AuthController.Login)
@@ -55,4 +57,11 @@ func SetupRoutes(router *gin.Engine) {
 	router.POST("/generate-otp", OTPController.GenerateOTPForSignUp)
 	router.POST("/send-otp", OTPController.SendOTP) // Not use on frontend only called on backend
 	router.POST("/verify-otp", OTPController.ValidateOTPForSignUp)
+	router.POST("/reset-password", UserController.ResetPassword)
+	router.POST("/send-reset-password-link", TokenController.SendResetPasswordEmail)
+	router.POST("/verify-reset-password-link", TokenController.VerifyResetPasswordToken)
+
+	//Protected routes
+	protected := router.Group("/")
+	protected.Use(middleware.AuthMiddleware())
 }
