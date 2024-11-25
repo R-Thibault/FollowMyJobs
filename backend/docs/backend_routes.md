@@ -71,3 +71,62 @@ Ce document décrit les différentes routes publiques disponibles dans l'applica
   "email": "utilisateur@example.com"
 }
 ```
+
+## Protected routes
+
+### **1. Create Application**
+
+- **URL:** `POST /api/applications`
+- **Body:**
+  ```json
+  {
+    "Url": "string, required",
+    "Title": "string, required",
+    "Company": "string, optional",
+    "Applied": "boolean, optional (default: true)"
+  }
+  ```
+- **Response:**  
+  Success: Application details (`200 OK`)  
+  Error: Validation or auth errors (`4XX/5XX`)
+
+### **2. Get All Applications**
+
+- **URL:** `GET /api/applications`
+- **Response:**  
+  Success: List of user applications (`200 OK`)  
+  Error: Auth errors (`401`)
+
+### **3. Get Single Application**
+
+- **URL:** `GET /api/applications/{id}`
+- **Response:**  
+  Success: Application details (`200 OK`)  
+  Error: Not found or unauthorized (`404/403`)
+
+### **4. Update Application**
+
+- **URL:** `POST /api/applications/{id}`
+- **Body:**  
+  Optional fields like `Url`, `Title`, `Applied`, etc.
+- **Response:**  
+  Success: Updated application (`200 OK`)  
+  Error: Auth or validation errors (`4XX`)
+
+### **5. Delete Application**
+
+- **URL:** `POST /api/applications/{id}`
+- **Response:**  
+  Success: Deletion confirmation (`200 OK`)  
+  Error: Not found or unauthorized (`404/403`)
+
+---
+
+## Error Codes
+
+- `400`: Validation error
+- `401`: Authentication required
+- `403`: Unauthorized access
+- `404`: Application not found
+
+---

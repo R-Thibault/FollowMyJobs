@@ -7,9 +7,11 @@ import (
 	"github.com/R-Thibault/FollowMyJobs/backend/internal/middleware"
 	otpGeneratorUtils "github.com/R-Thibault/FollowMyJobs/backend/internal/otpGenerator_util"
 	tokenUtils "github.com/R-Thibault/FollowMyJobs/backend/internal/tokenGenerator_util"
+	applicationrepository "github.com/R-Thibault/FollowMyJobs/backend/repository/application_repository"
 	otpRepository "github.com/R-Thibault/FollowMyJobs/backend/repository/otp_repository"
 	userRepository "github.com/R-Thibault/FollowMyJobs/backend/repository/user_repository"
 	"github.com/R-Thibault/FollowMyJobs/backend/services"
+	applicationservices "github.com/R-Thibault/FollowMyJobs/backend/services/application_services"
 	otpServices "github.com/R-Thibault/FollowMyJobs/backend/services/otp_services"
 	registrationservices "github.com/R-Thibault/FollowMyJobs/backend/services/registration_services"
 	tokenService "github.com/R-Thibault/FollowMyJobs/backend/services/token_services"
@@ -31,6 +33,7 @@ func SetupRoutes(router *gin.Engine) {
 	// Initialize repositories
 	UserRepository := userRepository.NewUserRepository(config.DB)
 	OTPRepository := otpRepository.NewOTPRepository(config.DB)
+	ApplicationRepository := applicationrepository.NewApplicationRepository(config.DB)
 
 	// Initialize Utilities
 	HashingService := hashingUtils.NewHashingService()
@@ -43,12 +46,14 @@ func SetupRoutes(router *gin.Engine) {
 	OTPService := otpServices.NewOTPService(UserRepository, OTPRepository, OTPGeneratorService)
 	MailerService := services.NewMailerService()
 	RegistrationService := registrationservices.NewRegistrationService(UserRepository, HashingService)
+	ApplicationService := applicationservices.NewApplicationService(ApplicationRepository)
 
 	// Initialize Controllers
 	AuthController := controllers.NewAuthController(UserService, HashingService, TokenService, GenerateTokenService)
 	UserController := controllers.NewUserController(UserService, OTPService, TokenService, RegistrationService)
 	OTPController := controllers.NewOTPController(OTPService, MailerService, UserService)
 	TokenController := controllers.NewTokenController(TokenService, UserService, OTPService, GenerateTokenService, *MailerService)
+	ApplicationController := controllers.NewApplicationController(UserService, ApplicationService)
 
 	// Public routes
 	router.POST("/login", AuthController.Login)
@@ -64,4 +69,11 @@ func SetupRoutes(router *gin.Engine) {
 	//Protected routes
 	protected := router.Group("/")
 	protected.Use(middleware.AuthMiddleware())
+
+	protected.GET("/me", UserController.MyProfile)
+	// protected.POST("/update-user", UserController.UpdateUserProfile)
+	protected.POST("/create-application", ApplicationController.SaveApplication)
+	protected.POST("/get-applications-by-user", ApplicationController.GetAllApplicationsByUserID)
+	protected.POST("/update-application")
+	protected.POST("/delete-application") //Soft delete with Gorm
 }
