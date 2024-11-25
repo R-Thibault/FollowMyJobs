@@ -4,6 +4,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/R-Thibault/FollowMyJobs/backend/internal"
 	hashingUtils "github.com/R-Thibault/FollowMyJobs/backend/internal/hash_util"
 	"github.com/R-Thibault/FollowMyJobs/backend/models"
 	otpRepository "github.com/R-Thibault/FollowMyJobs/backend/repository/otp_repository"
@@ -39,6 +40,30 @@ func (s *UserService) EmailValidation(email string) error {
 
 func (s *UserService) GetUserByID(userID uint) (*models.User, error) {
 	return s.UserRepo.GetUserByID(userID)
+}
+
+func (s *UserService) GetUserByUUID(userUUID string) (*models.User, error) {
+	return s.UserRepo.GetUserByUUID(userUUID)
+}
+
+func (s *UserService) UpdateUserDetails(existingUser models.User, updatedUserDatas models.UserProfileUpdate) error {
+	if updatedUserDatas.Email == "" {
+		return errors.New("Email can't be empty")
+	}
+	if !internal.RegexPassword(updatedUserDatas.Password) {
+		return errors.New("Password do not match requirement")
+	}
+	if updatedUserDatas.Password != updatedUserDatas.ConfirmPassword {
+		return errors.New("Password confirmation do not match password")
+	}
+	passwordHashed, hashErr := s.hashingUtils.HashPassword(updatedUserDatas.Password)
+	if hashErr != nil {
+		return errors.New("Hashing process failed")
+	}
+	updatedUser := models.User{
+		HashedPassword: passwordHashed,
+	}
+	return s.UserRepo.UpdateUser(existingUser.ID, updatedUser)
 }
 
 func (s *UserService) ResetPassword(user models.User, claims models.JWTToken, newPassword string) error {

@@ -120,6 +120,24 @@ func (_m *UserRepositoryInterface) SaveUser(user models.User) error {
 	return r0
 }
 
+// UpdateUser provides a mock function with given fields: existingUserID, updatedUser
+func (_m *UserRepositoryInterface) UpdateUser(existingUserID uint, updatedUser models.User) error {
+	ret := _m.Called(existingUserID, updatedUser)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateUser")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(uint, models.User) error); ok {
+		r0 = rf(existingUserID, updatedUser)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // UpdateUserPassword provides a mock function with given fields: existingUserID, updatedHashpassword
 func (_m *UserRepositoryInterface) UpdateUserPassword(existingUserID uint, updatedHashpassword string) error {
 	ret := _m.Called(existingUserID, updatedHashpassword)
