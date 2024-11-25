@@ -39,8 +39,6 @@ func SeedDatabaseWithUsers(db *gorm.DB) error {
 	// Sample users to insert
 	users := []models.User{
 		{
-			FirstName:      "John",
-			LastName:       "Doe",
 			Email:          "johndoe@example.com",
 			HashedPassword: hashedPassword,
 			UserStatus:     "active",
@@ -48,8 +46,6 @@ func SeedDatabaseWithUsers(db *gorm.DB) error {
 			EmailIsValide:  true,
 		},
 		{
-			FirstName:      "Jane",
-			LastName:       "Doe",
 			Email:          "janedoe@example.com",
 			HashedPassword: hashedPassword,
 			UserStatus:     "active",
@@ -61,10 +57,10 @@ func SeedDatabaseWithUsers(db *gorm.DB) error {
 	// Insert each user into the database
 	for _, user := range users {
 		if err := db.Create(&user).Error; err != nil {
-			log.Printf("Error seeding user %s: %v\n", user.FirstName, err)
+			log.Printf("Error seeding user %s: %v\n", user.Email, err)
 			return errors.New("Error seeding user")
 		} else {
-			log.Printf("Seeded user: %s\n", user.FirstName)
+			log.Printf("Seeded user: %s\n", user.Email)
 		}
 	}
 

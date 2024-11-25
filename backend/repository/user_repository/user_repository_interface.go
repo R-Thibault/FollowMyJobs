@@ -23,6 +23,11 @@ type UserRepositoryInterface interface {
 	// Returns a pointer to the User model and an error if any.
 	GetUserByID(ID uint) (*models.User, error)
 
+	// UpdateUser updates the user data for an existing user.
+	// Takes the user's ID and the updated user data as parameters.
+	// Returns an error if the user could not be updated.
+	UpdateUser(existingUserID uint, updatedUser models.User) error
+
 	// UpdateUserPassword updates the password hash of an existing user.
 	// Takes the user's ID and the new hashed password as parameters.
 	// Returns an error if the password could not be updated.

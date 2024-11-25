@@ -29,6 +29,24 @@ type UserServiceInterface interface {
 	// - error: An error if the user could not be retrieved.
 	GetUserByID(userID uint) (*models.User, error)
 
+	// GetUserByUUID retrieves a user by their unique UUID.
+	// It returns a pointer to the User model and an error if any occurs.
+	// Parameters:
+	// - userUUID: The unique UUID of the user to retrieve.
+	// Returns:
+	// - *models.User: A pointer to the User model if found.
+	// - error: An error if the user could not be retrieved.
+	GetUserByUUID(userUUID string) (*models.User, error)
+
+	// UpdateUserDetails updates the details of an existing user.
+	// It returns an error if the user details could not be updated.
+	// Parameters:
+	// - existingUser: The current user details.
+	// - updatedUserDatas: The new user details to update.
+	// Returns:
+	// - error: An error if the user details could not be updated.
+	UpdateUserDetails(existingUser models.User, updatedUserDatas models.UserProfileUpdate) error
+
 	// ResetPassword resets the password for a given user.
 	// It returns an error if the password could not be reset.
 	// Parameters:
