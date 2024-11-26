@@ -189,3 +189,68 @@ func TestApplication_ApplicationUpdateFail(t *testing.T) {
 	assert.Contains(t, w.Body.String(), "Error during application update")
 	mockApplicationService.AssertExpectations(t)
 }
+
+func TestApplication_ApplicationStatusUpdateSuccess(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	mockUserService := new(serviceMocks.UserServiceInterface)
+	mockApplicationService := new(serviceMocks.ApplicationServiceInterface)
+	applicationController := controllers.NewApplicationController(mockUserService, mockApplicationService)
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+
+	applicationStatus := models.ApplicationStatusRequest{
+		ID:       1,
+		Applied:  true,
+		Response: true,
+		FollowUp: false,
+	}
+
+	body, _ := json.Marshal(applicationStatus)
+	c.Request, _ = http.NewRequest(http.MethodPost, "/application-status-update", bytes.NewBuffer(body))
+	c.Request.Header.Set("Content-type", "application/json")
+
+	c.Set("userUUID", "valid-uuid")
+	mockUserService.On("GetUserByUUID", "valid-uuid").Return(&models.User{Model: gorm.Model{
+		ID: 1,
+	}}, nil)
+
+	mockApplicationService.On("UpdateApplicationStatus", uint(1), applicationStatus).Return(nil)
+
+	applicationController.UpdateApplicationStatus(c)
+
+	assert.Equal(t, http.StatusOK, w.Code, "Expected status code 200, but got %v", w.Code)
+	assert.Contains(t, w.Body.String(), "application status update successfully")
+	mockApplicationService.AssertExpectations(t)
+}
+
+func TestApplication_ApplicationStatusUpdateFail(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	mockUserService := new(serviceMocks.UserServiceInterface)
+	mockApplicationService := new(serviceMocks.ApplicationServiceInterface)
+	applicationController := controllers.NewApplicationController(mockUserService, mockApplicationService)
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+
+	applicationStatus := models.ApplicationStatusRequest{
+		ID:       1,
+		Applied:  true,
+		Response: true,
+		FollowUp: false,
+	}
+
+	body, _ := json.Marshal(applicationStatus)
+	c.Request, _ = http.NewRequest(http.MethodPost, "/application-status-update", bytes.NewBuffer(body))
+	c.Request.Header.Set("Content-type", "application/json")
+
+	c.Set("userUUID", "valid-uuid")
+	mockUserService.On("GetUserByUUID", "valid-uuid").Return(&models.User{Model: gorm.Model{
+		ID: 1,
+	}}, nil)
+	mockApplicationService.On("UpdateApplicationStatus", uint(1), applicationStatus).Return(errors.New("Error during status update"))
+
+	applicationController.UpdateApplicationStatus(c)
+
+	assert.Equal(t, http.StatusInternalServerError, w.Code)
+	assert.Contains(t, w.Body.String(), "Error during status update")
+	mockApplicationService.AssertExpectations(t)
+}
