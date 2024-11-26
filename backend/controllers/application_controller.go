@@ -3,6 +3,7 @@ package controllers
 import (
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/R-Thibault/FollowMyJobs/backend/models"
 	applicationservices "github.com/R-Thibault/FollowMyJobs/backend/services/application_services"
@@ -86,9 +87,9 @@ func (app *ApplicationController) UpdateApplication(c *gin.Context) {
 }
 
 func (app *ApplicationController) GetApplicationByID(c *gin.Context) {
-	var appData models.Application
-	if err := c.ShouldBindJSON(&appData); err != nil {
-		// If the input is invalid, respond with an error
+	idStr := c.Param("id")
+	applicationID, err := strconv.ParseUint(idStr, 10, 32)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request data"})
 		return
 	}
@@ -109,7 +110,7 @@ func (app *ApplicationController) GetApplicationByID(c *gin.Context) {
 		return
 	}
 
-	application, appErr := app.ApplicationService.GetApplicationByID(existingUser.ID, appData.ID)
+	application, appErr := app.ApplicationService.GetApplicationByID(existingUser.ID, uint(applicationID))
 	if appErr != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Can't get application informations"})
 		return
@@ -171,4 +172,33 @@ func (app *ApplicationController) DeleteApplication(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "application delete successfully"})
+}
+
+func (app *ApplicationController) UpdateApplicationStatus(c *gin.Context) {
+	var appStatus models.ApplicationStatusRequest
+	if err := c.ShouldBindJSON(&appStatus); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request data"})
+		return
+	}
+	userUUID, exists := c.Get("userUUID")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "UserUUID not Found in context"})
+		return
+	}
+	userUUIDStr, ok := userUUID.(string)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "UserUUID in context is not a a valid string"})
+		return
+	}
+	existingUser, err := app.UserService.GetUserByUUID(userUUIDStr)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "UserUUID do not match a user"})
+		return
+	}
+	statusErr := app.ApplicationService.UpdateApplicationStatus(existingUser.ID, appStatus)
+	if statusErr != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error during status update"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "application status update successfully"})
 }

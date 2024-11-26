@@ -138,6 +138,24 @@ func (_m *ApplicationRepositoryInterface) UpdateApplication(appDatas models.Appl
 	return r0, r1
 }
 
+// UpdateApplicationStatus provides a mock function with given fields: application
+func (_m *ApplicationRepositoryInterface) UpdateApplicationStatus(application models.Application) error {
+	ret := _m.Called(application)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateApplicationStatus")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(models.Application) error); ok {
+		r0 = rf(application)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // NewApplicationRepositoryInterface creates a new instance of ApplicationRepositoryInterface. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
 func NewApplicationRepositoryInterface(t interface {
