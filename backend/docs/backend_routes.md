@@ -94,39 +94,70 @@ Ce document décrit les différentes routes publiques disponibles dans l'applica
 
 - **URL:** `GET /get-applications-by-user`
 - **Response:**  
-  Success: List of user applications (`200 OK`)  
+  Success: List of user applications (`200 OK`)
+  Example :
+
+  ```json
+  {
+    "data": [
+      {
+        "id": 1,
+        "user_id": 123,
+        "url": "https://example.com/job",
+        "title": "Software Engineer",
+        "company": "Example Corp",
+        "location": "New York, NY",
+        "description": "Job description here...",
+        "salary": "$100,000",
+        "job_type": "Full-Time",
+        "applied": true,
+        "response": false,
+        "follow_up": false,
+        "created_at": "2024-04-27T10:00:00Z",
+        "updated_at": "2024-04-27T10:00:00Z"
+      }
+    ],
+    "pagination": {
+      "current_page": 1,
+      "page_size": 10,
+      "total_pages": 5,
+      "total_items": 50
+    }
+  }
+  ```
+
   Error: Auth errors (`401`)
 
 ### **3. Get Single Application**
 
 - **URL:** `GET /applications/{id}`
-- **Response:**  
-  Success: Application details (`200 OK`)  
+- **Response:**
+  Success: Application details (`200 OK`)
   Error: Not found or unauthorized (`404/403`)
 
 ### **4. Update Application**
 
 - **URL:** `POST /update-application`
-- **Body:**  
+- **Body:**
   Optional fields like `Url`, `Title`, `Applied`, etc.
-- **Response:**  
-  Success: Updated application (`200 OK`)  
+- **Response:**
+  Success: Updated application (`200 OK`)
   Error: Auth or validation errors (`4XX`)
 
 ### **5. Delete Application**
 
 - **URL:** `POST /delete-application`
-- **Response:**  
-  Success: Deletion confirmation (`200 OK`)  
+- **Response:**
+  Success: Deletion confirmation (`200 OK`)
   Error: Not found or unauthorized (`404/403`)
 
 ### **6. Update Application Status**
 
 - **URL:** `POST /application-status-update`
-- **Body:**  
+- **Body:**
   Optional fields like `applied`, `followUp`, `response`, etc.
-- **Response:**  
-  Success: Updated application (`200 OK`)  
+- **Response:**
+  Success: Updated application (`200 OK`)
   Error: Auth or validation errors (`4XX`)
 
 ---
@@ -139,3 +170,7 @@ Ce document décrit les différentes routes publiques disponibles dans l'applica
 - `404`: Application not found
 
 ---
+
+```
+
+```
