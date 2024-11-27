@@ -138,6 +138,24 @@ func (_m *ApplicationServiceInterface) UpdateApplication(userID uint, appData mo
 	return r0, r1
 }
 
+// UpdateApplicationStatus provides a mock function with given fields: userID, applicationDatas
+func (_m *ApplicationServiceInterface) UpdateApplicationStatus(userID uint, applicationDatas models.ApplicationStatusRequest) error {
+	ret := _m.Called(userID, applicationDatas)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateApplicationStatus")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(uint, models.ApplicationStatusRequest) error); ok {
+		r0 = rf(userID, applicationDatas)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // NewApplicationServiceInterface creates a new instance of ApplicationServiceInterface. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
 func NewApplicationServiceInterface(t interface {

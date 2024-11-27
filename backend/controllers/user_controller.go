@@ -106,7 +106,6 @@ func (u *UserController) MyProfile(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "UserUUID do not match a user"})
 		return
 	}
-
 	c.JSON(http.StatusOK, gin.H{"userEmail": existingUser.Email})
 }
 

@@ -76,7 +76,7 @@ Ce document décrit les différentes routes publiques disponibles dans l'applica
 
 ### **1. Create Application**
 
-- **URL:** `POST /api/applications`
+- **URL:** `POST /applications`
 - **Body:**
   ```json
   {
@@ -92,21 +92,21 @@ Ce document décrit les différentes routes publiques disponibles dans l'applica
 
 ### **2. Get All Applications**
 
-- **URL:** `GET /api/applications`
+- **URL:** `GET /get-applications-by-user`
 - **Response:**  
   Success: List of user applications (`200 OK`)  
   Error: Auth errors (`401`)
 
 ### **3. Get Single Application**
 
-- **URL:** `GET /api/applications/{id}`
+- **URL:** `GET /applications/{id}`
 - **Response:**  
   Success: Application details (`200 OK`)  
   Error: Not found or unauthorized (`404/403`)
 
 ### **4. Update Application**
 
-- **URL:** `POST /api/applications/{id}`
+- **URL:** `POST /update-application`
 - **Body:**  
   Optional fields like `Url`, `Title`, `Applied`, etc.
 - **Response:**  
@@ -115,10 +115,19 @@ Ce document décrit les différentes routes publiques disponibles dans l'applica
 
 ### **5. Delete Application**
 
-- **URL:** `POST /api/applications/{id}`
+- **URL:** `POST /delete-application`
 - **Response:**  
   Success: Deletion confirmation (`200 OK`)  
   Error: Not found or unauthorized (`404/403`)
+
+### **6. Update Application Status**
+
+- **URL:** `POST /application-status-update`
+- **Body:**  
+  Optional fields like `applied`, `followUp`, `response`, etc.
+- **Response:**  
+  Success: Updated application (`200 OK`)  
+  Error: Auth or validation errors (`4XX`)
 
 ---
 

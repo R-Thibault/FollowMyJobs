@@ -18,3 +18,10 @@ type Application struct {
 	Response    bool   `gorm:"default:false"`
 	FollowUp    bool   `gorm:"default:false"`
 }
+
+type ApplicationStatusRequest struct {
+	ID       uint `json:"appID"`
+	Applied  bool `json:"applied"`
+	Response bool `json:"response"`
+	FollowUp bool `json:"followUp"`
+}

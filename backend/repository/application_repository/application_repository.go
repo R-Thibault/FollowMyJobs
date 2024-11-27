@@ -82,3 +82,17 @@ func (r *ApplicationRepository) DeleteApplication(application models.Application
 
 	return nil
 }
+
+func (r *ApplicationRepository) UpdateApplicationStatus(application models.Application) error {
+	if r.db == nil {
+		return errors.New("database connection is nil")
+	}
+	result := r.db.Model(&models.Application{}).Where("id = ?", application.ID).Updates(application)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return gorm.ErrRecordNotFound
+		}
+		return result.Error
+	}
+	return nil
+}

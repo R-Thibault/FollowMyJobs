@@ -74,3 +74,24 @@ func (s *ApplicationService) DeleteApplication(userID uint, applicationID uint) 
 	}
 	return nil
 }
+
+func (s *ApplicationService) UpdateApplicationStatus(userID uint, applicationDatas models.ApplicationStatusRequest) error {
+	if userID == 0 || applicationDatas.ID == 0 {
+		return errors.New("UserID or ApplicationID can't be null")
+	}
+	application, err := s.ApplicationRepo.GetApplicationByID(applicationDatas.ID)
+	if err != nil || application == nil {
+		return errors.New("Can't find application")
+	}
+	if application.UserID != userID {
+		return errors.New("Application not created by user")
+	}
+	application.Applied = applicationDatas.Applied
+	application.Response = applicationDatas.Response
+	application.FollowUp = applicationDatas.FollowUp
+	statusErr := s.ApplicationRepo.UpdateApplicationStatus(*application)
+	if statusErr != nil {
+		return errors.New("Error during status update")
+	}
+	return nil
+}
