@@ -52,20 +52,24 @@ func (r *ApplicationRepository) GetApplicationByID(applicationID uint) (*models.
 	return &application, nil
 }
 
-func (r *ApplicationRepository) GetApplicationsByUserID(userID uint) ([]*models.Application, error) {
+func (r *ApplicationRepository) GetApplicationsByUserID(userID uint, requestSettings models.RequestSettings) ([]*models.Application, int64, error) {
 	if r.db == nil {
-		return nil, errors.New("database connection is nil")
+		return nil, 0, errors.New("database connection is nil")
 	}
+	//Get TotalItems with a count before using limit/offset
+	var totalItems int64
+	r.db.Model(&models.Application{}).Where("user_id = ?", userID).Count(&totalItems)
+	// Query to return applications with Limit/Offset
 	var applications []*models.Application
-	result := r.db.Where("user_id = ?", userID).Find(&applications)
+	result := r.db.Where("user_id = ?", userID).Limit(requestSettings.Limit).Offset(requestSettings.OffSet).Find(&applications)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return nil, gorm.ErrRecordNotFound
+			return nil, 0, gorm.ErrRecordNotFound
 		}
-		return nil, result.Error
+		return nil, 0, result.Error
 	}
 
-	return applications, nil
+	return applications, totalItems, nil
 }
 
 func (r *ApplicationRepository) DeleteApplication(application models.Application) error {

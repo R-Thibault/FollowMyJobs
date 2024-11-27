@@ -119,6 +119,20 @@ func (app *ApplicationController) GetApplicationByID(c *gin.Context) {
 }
 
 func (app *ApplicationController) GetAllApplicationsByUserID(c *gin.Context) {
+	// Get additionnal setting for query
+	var requestSettings models.RequestSettings
+	limit, err := strconv.Atoi(c.Param("page_size"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid page size"})
+		return
+	}
+	offSet, err := strconv.Atoi(c.Param("page"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid page size"})
+		return
+	}
+	requestSettings.Limit = limit
+	requestSettings.OffSet = offSet
 
 	userUUID, exists := c.Get("userUUID")
 	if !exists {
@@ -135,12 +149,23 @@ func (app *ApplicationController) GetAllApplicationsByUserID(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "UserUUID do not match a user"})
 		return
 	}
-	applications, err := app.ApplicationService.GetApplicationsByUserID(existingUser.ID)
+	applications, totalItems, err := app.ApplicationService.GetApplicationsByUserID(existingUser.ID, requestSettings)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Can't find applications for this user"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": applications})
+	totalPages := (totalItems + int64(requestSettings.Limit) - 1) / int64(requestSettings.Limit)
+
+	response := gin.H{
+		"datas": applications,
+		"pagintation": gin.H{
+			"current_page": requestSettings.OffSet,
+			"page_size":    requestSettings.Limit,
+			"total_pages":  totalPages,
+			"total_items":  totalItems,
+		},
+	}
+	c.JSON(http.StatusOK, response)
 }
 
 func (app *ApplicationController) DeleteApplication(c *gin.Context) {

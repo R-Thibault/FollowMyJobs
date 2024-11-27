@@ -35,7 +35,7 @@ type ApplicationServiceInterface interface {
 	// Returns:
 	// - []*models.Application: a slice of applications.
 	// - error: an error if the operation fails, otherwise nil.
-	GetApplicationsByUserID(userID uint) ([]*models.Application, error)
+	GetApplicationsByUserID(userID uint, requestSettings models.RequestSettings) ([]*models.Application, int64, error)
 
 	// DeleteApplication deletes an application by its ID for a user.
 	// Parameters:

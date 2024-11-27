@@ -60,34 +60,41 @@ func (_m *ApplicationRepositoryInterface) GetApplicationByID(applicationID uint)
 	return r0, r1
 }
 
-// GetApplicationsByUserID provides a mock function with given fields: userID
-func (_m *ApplicationRepositoryInterface) GetApplicationsByUserID(userID uint) ([]*models.Application, error) {
-	ret := _m.Called(userID)
+// GetApplicationsByUserID provides a mock function with given fields: userID, requestSettings
+func (_m *ApplicationRepositoryInterface) GetApplicationsByUserID(userID uint, requestSettings models.RequestSettings) ([]*models.Application, int64, error) {
+	ret := _m.Called(userID, requestSettings)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetApplicationsByUserID")
 	}
 
 	var r0 []*models.Application
-	var r1 error
-	if rf, ok := ret.Get(0).(func(uint) ([]*models.Application, error)); ok {
-		return rf(userID)
+	var r1 int64
+	var r2 error
+	if rf, ok := ret.Get(0).(func(uint, models.RequestSettings) ([]*models.Application, int64, error)); ok {
+		return rf(userID, requestSettings)
 	}
-	if rf, ok := ret.Get(0).(func(uint) []*models.Application); ok {
-		r0 = rf(userID)
+	if rf, ok := ret.Get(0).(func(uint, models.RequestSettings) []*models.Application); ok {
+		r0 = rf(userID, requestSettings)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]*models.Application)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(uint) error); ok {
-		r1 = rf(userID)
+	if rf, ok := ret.Get(1).(func(uint, models.RequestSettings) int64); ok {
+		r1 = rf(userID, requestSettings)
 	} else {
-		r1 = ret.Error(1)
+		r1 = ret.Get(1).(int64)
 	}
 
-	return r0, r1
+	if rf, ok := ret.Get(2).(func(uint, models.RequestSettings) error); ok {
+		r2 = rf(userID, requestSettings)
+	} else {
+		r2 = ret.Error(2)
+	}
+
+	return r0, r1, r2
 }
 
 // SaveApplication provides a mock function with given fields: appDatas

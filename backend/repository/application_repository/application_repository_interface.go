@@ -17,7 +17,7 @@ type ApplicationRepositoryInterface interface {
 
 	// GetApplicationsByUserID retrieves all applications associated with a user ID from the repository.
 	// Returns a slice of applications and an error if the operation fails.
-	GetApplicationsByUserID(userID uint) ([]*models.Application, error)
+	GetApplicationsByUserID(userID uint, requestSettings models.RequestSettings) ([]*models.Application, int64, error)
 
 	// DeleteApplication removes an application from the repository.
 	// Returns an error if the operation fails.
