@@ -3,10 +3,12 @@
 echo "Generating mocks..."
 # Define the directories to watch for changes
 WATCH_DIRS=(
+    "repository/application_repository"
     "repository/user_repository"
     "repository/otp_repository"
     "services/user_services"
     "services/token_services"
+    "services/application_services"
     "services/otp_services"
     "services/registration_services"
     "internal/hash_util"
@@ -17,6 +19,10 @@ WATCH_DIRS=(
 # Define a function to generate mocks for specific interfaces
 generate_mock() {
     case $1 in
+        "repository/application_repository")
+            echo "Generating mock for ApplicationRepositoryInterface..."
+            mockery --name ApplicationRepositoryInterface --dir ./repository/application_repository --output ./repository/mocks
+            ;;
         "repository/user_repository")
             echo "Generating mock for UserRepositoryInterface..."
             mockery --name UserRepositoryInterface --dir ./repository/user_repository --output ./repository/mocks
@@ -32,6 +38,10 @@ generate_mock() {
         "services/token_services")
             echo "Generating mock for TokenServiceInterface..."
             mockery --name TokenServiceInterface --dir ./services/token_services --output ./services/mocks
+            ;;
+        "services/application_services")
+            echo "Generating mock for ApplicationServiceInterface..."
+            mockery --name ApplicationServiceInterface --dir ./services/application_services --output ./services/mocks
             ;;
         "services/otp_services")
             echo "Generating mock for OTPServiceInterface..."

@@ -62,13 +62,9 @@ func (t *TokenController) VerifyResetPasswordToken(c *gin.Context) {
 }
 
 func (t *TokenController) SendResetPasswordEmail(c *gin.Context) {
-	var creds models.ResetPasswordCredentials
+	var creds models.ResetPasswordMail
 	if err := c.ShouldBindJSON(&creds); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
-		return
-	}
-	if creds.Password != creds.ConfirmPassword {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Password and confirm do not match"})
 		return
 	}
 	existingUser, err := t.UserServices.GetUserByEmail(creds.Email)
