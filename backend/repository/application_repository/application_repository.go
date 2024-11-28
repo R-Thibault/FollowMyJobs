@@ -61,7 +61,21 @@ func (r *ApplicationRepository) GetApplicationsByUserID(userID uint, requestSett
 	r.db.Model(&models.Application{}).Where("user_id = ?", userID).Count(&totalItems)
 	// Query to return applications with Limit/Offset
 	var applications []*models.Application
-	result := r.db.Where("user_id = ?", userID).Limit(requestSettings.Limit).Offset(requestSettings.OffSet).Find(&applications)
+	result := r.db
+	result = result.Where("user_id = ?", userID)
+	if requestSettings.Title != nil {
+		result = result.Where("title LIKE ?", "%"+*requestSettings.Title+"%")
+	}
+	if requestSettings.Status.Applied != nil {
+		result = result.Where("applied = ?", *requestSettings.Status.Applied)
+	}
+	if requestSettings.Status.Response != nil {
+		result = result.Where("response = ?", *requestSettings.Status.Response)
+	}
+	if requestSettings.Status.FollowUp != nil {
+		result = result.Where("follow_up = ?", *requestSettings.Status.FollowUp)
+	}
+	result = result.Order("created_at " + requestSettings.OrderByCreatedAt).Limit(requestSettings.Limit).Offset(requestSettings.OffSet).Find(&applications)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return nil, 0, gorm.ErrRecordNotFound

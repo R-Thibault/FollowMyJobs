@@ -13,3 +13,7 @@ type ResetPasswordCredentials struct {
 	ConfirmPassword string `json:"confirmPassword"`
 	TokenString     string `json:"tokenString"`
 }
+
+type ResetPasswordMail struct {
+	Email string `json:"email"`
+}
