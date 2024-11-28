@@ -164,6 +164,15 @@ func (app *ApplicationController) GetAllApplicationsByUserID(c *gin.Context) {
 			"total_pages":  totalPages,
 			"total_items":  totalItems,
 		},
+		"filter": gin.H{
+			"title":            *requestSettings.Title,
+			"orderByCreatedAt": requestSettings.OrderByCreatedAt,
+			"status": gin.H{
+				"applied":  *requestSettings.Status.Applied,
+				"response": *requestSettings.Status.Response,
+				"followUp": *requestSettings.Status.FollowUp,
+			},
+		},
 	}
 	c.JSON(http.StatusOK, response)
 }
