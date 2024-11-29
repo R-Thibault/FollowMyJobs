@@ -5,7 +5,7 @@ import (
 
 	"github.com/R-Thibault/FollowMyJobs/backend/config"
 	"github.com/R-Thibault/FollowMyJobs/backend/models"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type TokenService struct {

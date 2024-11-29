@@ -1,0 +1,45 @@
+# Ignorer les binaires générés
+/app
+*.exe
+*.out
+*.o
+*.a
+
+# Ignorer les fichiers de configuration sensibles
+*.env
+*.env.*
+
+# Ignorer les fichiers et dossiers spécifiques au système
+.DS_Store
+Thumbs.db
+
+# Ignorer les fichiers et dossiers liés à Git
+.git
+.gitignore
+
+# Ignorer les fichiers spécifiques à Go qui ne sont pas nécessaires pour construire l'image
+*.test
+*.log
+*.prof
+
+# Ignorer les caches et fichiers temporaires
+/tmp
+*.tmp
+*.swp
+*.bak
+*.old
+
+# Ignorer les dossiers de documentation
+/docs
+README.md
+
+# Ignorer les scripts et autres fichiers inutiles pour l'image finale
+*.sh
+
+# Ignorer les dépendances locales si elles existent
+vendor/
+
+# Ignorer les outils de développement
+.air.toml
+.vscode/
+.idea/

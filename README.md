@@ -7,6 +7,7 @@ FollowMyJobs is an open-source, lightweight tool designed to help job seekers or
 - [Project Overview](#project-overview)
 - [Features](#features)
 - [Getting Started](#getting-started)
+- [Documentation](#documentation)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
 
@@ -28,7 +29,7 @@ FollowMyJobs is an open-source, lightweight tool designed to help job seekers or
 - **Golang**: Install the latest version from [Golang's official website](https://golang.org/).
 - **Docker**: Docker is recommended for development and deployment.
 
-### Installation
+### Quick Start
 
 1. **Clone the Repository**:
 
@@ -37,34 +38,56 @@ FollowMyJobs is an open-source, lightweight tool designed to help job seekers or
    cd FollowMyJobs
    ```
 
-2. **Set Up Environment Variables**:
+2. **Run the Backend**:
 
-   - Create a `.env` file in the project root and add your environment variables (e.g., database credentials, JWT secret).
+   - Follow the [Backend Starter Guide](./backend/docs/backend_starter.md) for detailed instructions on setting up and running the backend.
 
-3. **Install Backend Dependencies**:
-
-   ```bash
-   cd backend
-   go mod download
-   ```
-
-4. **Install Frontend Dependencies**:
+3. **Frontend Setup** (Optional):
 
    ```bash
    cd frontend
    npm install
    ```
 
-5. **Run the Application**:
-   - **Backend**: Start the backend server
-     ```bash
-     cd backend
-     air
-     ```
-
 ### Testing
 
-Tests will be added as the project progresses.
+Tests in this project are automated using **Lefthook**, a powerful tool for managing Git hooks.
+
+- **Pre-push Hooks**: Lefthook ensures that all tests are run before changes are push. This includes unit tests for controllers, services, and other backend components.
+
+#### Quick Start: Setting Up Lefthook
+
+To ensure Lefthook is working after cloning the repository, follow these steps:
+
+##### Step 1: Install Lefthook
+
+Choose one of the following installation methods:
+
+- **With Go**:
+  ```bash
+  go install github.com/evilmartians/lefthook@latest
+  ```
+
+For other installation options, visit the [Lefthook Installation Guide](https://github.com/evilmartians/lefthook#install).
+
+##### Step 2: Install Git Hooks
+
+Run the following command in the project root to install Lefthook hooks:
+
+```bash
+lefthook install
+```
+
+- **Running Tests Manually**: You can still run tests manually if needed.
+  ```bash
+  cd backend
+  go test ./...
+  ```
+
+## Documentation
+
+- **[Backend Guidelines](./backend/docs/backend_guildeline.md)**: Best practices and conventions for backend development.
+- **[Backend Routes](./backend/docs/backend_routes.md)**: A detailed description of the API routes available in the project.
 
 ## License
 
