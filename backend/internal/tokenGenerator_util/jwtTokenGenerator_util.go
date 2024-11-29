@@ -7,7 +7,7 @@ import (
 
 	"github.com/R-Thibault/FollowMyJobs/backend/config"
 	"github.com/R-Thibault/FollowMyJobs/backend/models"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type JWTTokenGeneratorUtil struct {
@@ -20,14 +20,12 @@ func NewJWTTokenGeneratorUtil() *JWTTokenGeneratorUtil {
 func (u *JWTTokenGeneratorUtil) GenerateJWTToken(tokenType string, body string, expirationTime time.Time) (JWTToken string, err error) {
 
 	var jwtKey = []byte(config.GetConfig("JWT_KEY"))
-	// Set expiration
-	// expirationTime := time.Now().Add(60 * time.Minute)
 
 	token := models.JWTToken{
 		TokenType: &tokenType,
 		Body:      &body,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expirationTime.Unix(),
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(expirationTime),
 		},
 	}
 
