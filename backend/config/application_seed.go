@@ -18,7 +18,7 @@ func SeedDatabaseWithApplications(db *gorm.DB) error {
 	fake := faker.New()
 	// Find users with FirstName "John" and "Jane"
 	var users []models.User
-	if err := db.Where("first_name IN ?", []string{"John", "Jane"}).Find(&users).Error; err != nil {
+	if err := db.Where("email IN ?", []string{"johndoe@example.com", "janedoe@example.com"}).Find(&users).Error; err != nil {
 		log.Fatalf("Failed to retrieve specific users: %v", err)
 	}
 	// If no users were found, log a message and return

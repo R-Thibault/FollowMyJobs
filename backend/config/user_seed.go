@@ -15,7 +15,7 @@ func SeedDatabaseWithUsers(db *gorm.DB) error {
 
 	// Check if a user with the first name "John" already exists
 	var existingUser models.User
-	if err := db.Where("first_name = ?", "John").First(&existingUser).Error; err == nil {
+	if err := db.Where("email = ?", "johndoe@example.com").First(&existingUser).Error; err == nil {
 		log.Println("User 'John' already exists. Skipping seeding.")
 		return nil
 	} else if !errors.Is(err, gorm.ErrRecordNotFound) {

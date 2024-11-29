@@ -10,15 +10,18 @@ import (
 )
 
 func SetupConfig() {
-	// Looking for ".env" file and try read it
+	// Looking for ".env" file and try to read it
 	viper.SetConfigFile(".env")
-	if err := viper.ReadInConfig(); err != nil {
-		log.Fatalf("Error reading config file: %v", err)
+	err := viper.ReadInConfig()
+	if err != nil {
+		log.Printf("Warning: Error reading .env file: %v. Falling back to environment variables.", err)
 	}
-
 	viper.AutomaticEnv() // Automatically read environment variables
-	// Debug: Print all configuration values
-	log.Println("Loaded Configuration:")
+
+	// Log non-sensitive configuration
+	log.Printf("Environment: %s", viper.GetString("APP_ENV"))
+	log.Printf("Port: %s", viper.GetString("POSTGRES_PORT"))
+
 }
 
 func GetConfig(key string) string {

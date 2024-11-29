@@ -2,14 +2,15 @@ package middleware
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/R-Thibault/FollowMyJobs/backend/config"
 	"github.com/R-Thibault/FollowMyJobs/backend/models"
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 // AuthMiddleware checks if the request contains a valid JWT token in the cookie.
@@ -40,9 +41,16 @@ func AuthMiddleware() gin.HandlerFunc {
 		})
 
 		if err != nil {
-			if ve, ok := err.(*jwt.ValidationError); ok && ve.Errors&jwt.ValidationErrorExpired != 0 {
+			// Handle specific JWT errors
+			if errors.Is(err, jwt.ErrTokenExpired) {
 				log.Println("Token expired")
 				c.JSON(http.StatusUnauthorized, gin.H{"error": "Token expired"})
+			} else if errors.Is(err, jwt.ErrTokenMalformed) {
+				log.Println("Malformed token")
+				c.JSON(http.StatusUnauthorized, gin.H{"error": "Malformed token"})
+			} else if errors.Is(err, jwt.ErrTokenNotValidYet) {
+				log.Println("Token not valid yet")
+				c.JSON(http.StatusUnauthorized, gin.H{"error": "Token not valid yet"})
 			} else {
 				log.Printf("Invalid token: %v", err)
 				c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
