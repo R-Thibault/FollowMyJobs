@@ -1,104 +1,59 @@
-import { useTranslations } from "next-intl";
+"use client";
+import LangageSelector from "@/components/moleculs/LangageSelector";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
+import Link from "next/link";
 
-export default function Home() {
-  const t = useTranslations("welcome");
+export default function HomePage() {
+  const t = useTranslations("homePage");
+  const locale = useLocale();
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <h1>{t("welcome")}</h1>
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="grow min-h-screen bg-home-page bg-cover p-4 flex flex-col">
+      {/* Navbar */}
+      <nav className="flex justify-center gap-24 items-center mb-8 sticky top-0 z-50 py-4 backdrop-blur-sm">
+        {/* Logo */}
+        <div className="text-lg font-bold">JobApp Manager</div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+        {/* Burger Menu Placeholder */}
+        <div className="md:hidden">
+          <button className="text-2xl">&#9776;</button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Desktop Nav Links */}
+        <div className="hidden md:flex text-lg space-x-4 justify-center items-center">
+          <a href="#">{t("nav.home")}</a>
+          <a href="#">{t("nav.getStarted")}</a>
+          <a href="#">{t("nav.contact")}</a>
+        </div>
+        {/* Language Switcher */}
+        <LangageSelector />
+      </nav>
+
+      {/* Main Content */}
+      <div className="flex-1 flex md:flex-row flex-col items-center justify-center text-center">
+        <div className="max-w-md px-4">
+          <h1 className="text-3xl font-bold mb-4 leading-tight">
+            {t("title")}
+          </h1>
+          <p className="text-lg text-gray-600 mb-6">{t("description")}</p>
+          {/* Call to Action */}
+          <Link
+            href={`/${locale}/login`}
+            className="bg-blue-500 text-white py-2 px-6 rounded-lg text-lg hover:bg-blue-600"
+          >
+            {t("cta")}
+          </Link>
+        </div>
+
+        {/* Image Section */}
+        <Image
+          src="https://images.unsplash.com/uploads/141103282695035fa1380/95cdfeef?q=80&w=2030&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="App Preview"
+          width={500}
+          height={400}
+          className="rounded-lg shadow-lg mt-8"
+        />
+      </div>
     </div>
   );
 }

@@ -1,5 +1,15 @@
 {
   "welcome": {
     "welcome": "Hello there !"
+  },
+  "homePage": {
+    "title": "Organize Your Job Applications Effortlessly",
+    "description": "Stay on top of your job search with ease and efficiency.",
+    "cta": "Get Started Now",
+    "nav": {
+      "home": "Home",
+      "getStarted": "Get Started",
+      "contact": "Contact"
+    }
   }
 }
