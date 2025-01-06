@@ -11,5 +11,45 @@
       "getStarted": "Get Started",
       "contact": "Contact"
     }
+  },
+  "loginPage": {
+    "welcomeTitle": "Welcome to FollowMyJobs!",
+    "welcomeText1": "Track your job applications, organize opportunities, and optimize your job search with our intuitive platform.",
+    "welcomeText2": "Create personalized tracking boards and receive reminders for interviews.",
+    "welcomeText3": "Join us today and take control of your career!",
+    "title": "Login",
+    "description": "Enter your email below to login to your account.",
+    "emailLabel": "email",
+    "passwordLabel": "password",
+    "forgotPassword": "Forgot your password?",
+    "loginbtn": "Login",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "errorMessageUnexpected": "An unexpected error occurred. Please try again.",
+    "errorMessageLogin": "Email or password incorect. Please try again."
+  },
+  "forgotPasswordPage": {
+    "emailLabel": "email",
+    "resetPswdModalTitle": "Reset your password",
+    "resetPswdModalDescription": "Enter your email below, an email will be sent with a link to reset your password.",
+    "resetPswdModalAction": "Send email",
+    "errorMessageResetPswd": "Please enter a valid email address.",
+    "resetPswdModalSuccessTitle": "Email sent",
+    "resetPswdModalSuccessMessage": "Your password reset request has been successfully received. If the email address associated with your account is correct, you will soon receive an email containing a secure link to reset your password.\n\nPlease check your inbox and spam folder.\n\nIf you did not initiate this request, please ignore this email or contact us immediately.",
+    "resetPswdModalSuccessClose": "Close",
+    "redirectHomePage": "Return to Login Page"
+  },
+  "resetPasswordPage": {
+    "emailLabel": "email",
+    "resetPswdModalTitle": "Reset your password",
+    "resetPswdModalDescription": "Enter your email below, an email will be sent with a link to reset your password.",
+    "resetPswdModalAction": "Send email",
+    "errorMessageResetPswd": "Please enter a valid email address.",
+    "resetPswdModalSuccessTitle": "Email sent",
+    "resetPswdModalSuccessMessage": "Your password reset request has been successfully received. If the email address associated with your account is correct, you will soon receive an email containing a secure link to reset your password.\n\nPlease check your inbox and spam folder.\n\nIf you did not initiate this request, please ignore this email or contact us immediately.",
+    "resetPswdModalSuccessClose": "Close",
+    "redirectHomePage": "Return to Login Page",
+    "tokenVerificationWait": "Token verification in progress...",
+    "tokenErrorMessage": "Invalid or expired token. Please contact support."
   }
 }
