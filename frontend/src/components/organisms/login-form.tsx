@@ -108,9 +108,12 @@ export function LoginForm({
             </div>
             <div className="mt-4 text-center text-sm">
               {t("noAccount")}{" "}
-              <a href="#" className="underline underline-offset-4">
+              <Link
+                href={`/${locale}/sign-up`}
+                className="ml-auto inline-block text-sm  border-none underline underline-offset-4 hover:bg-white"
+              >
                 {t("signUp")}
-              </a>
+              </Link>
             </div>
           </form>
         </CardContent>
