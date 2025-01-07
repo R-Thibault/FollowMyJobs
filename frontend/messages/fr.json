@@ -52,6 +52,35 @@
     "resetPswdModalSuccessClose": "Fermer",
     "redirectHomePage": "Revenir à la page de connexion",
     "tokenVerificationWait": "Vérification du token en cours...",
-    "tokenErrorMessage": "Token invalide ou expiré. Veuillez contacter l'assistance."
+    "tokenErrorMessage": "Token invalide ou expiré. Veuillez réessayer ultérieurement."
+  },
+  "signUpPage": {
+    "title": "Inscription",
+    "description": "Veuillez remplir les champs ci-dessous pour compléter votre inscription.",
+    "inscription": "Valider",
+    "emailLabel": "Email",
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "passwordLabel": "Mot de passe",
+    "confirmPasswordLabel": "Confirmez votre mot de passe",
+    "errorEmailInput": "Veuillez saisir une adresse email valide.",
+    "errorSignUpMessage": "Une erreur s'est produite durant l'inscription. Veuillez réessayer ultérieurement.",
+    "errorOTPEmail": "Une erreur est survenue lors de l'envoi de l'email. Veuillez réessayer ultérieurement.",
+    "errorOTPMessage": "Code OTP incorrect. Veuillez réessayer.",
+    "errorConfirmPasswordMessage": "Le mot de passe et la confirmation ne correspondent pas.",
+    "passwordRequirement": {
+      "length": "Au moins 8 caractères.",
+      "uppercase": "Au moins une lettre majuscule.",
+      "lowercase": "Au moins une lettre minuscule.",
+      "number": "Au moins un chiffre.",
+      "specialChar": "Au moins un caractère spécial (@ $ ! % * ? &)."
+    }
+  },
+  "OTPDialog": {
+    "title": "Code de validation OTP",
+    "description": "Veuillez saisir le code fourni dans l'email que vous avez reçu.",
+    "OTP": "Code OTP",
+    "OTPButton": "Valider",
+    "successMessage": "Votre compte est maintenant actif. Redirection automatique vers la page de connexion dans quelques secondes."
   }
 }

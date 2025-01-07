@@ -50,6 +50,35 @@
     "resetPswdModalSuccessClose": "Close",
     "redirectHomePage": "Return to Login Page",
     "tokenVerificationWait": "Token verification in progress...",
-    "tokenErrorMessage": "Invalid or expired token. Please contact support."
+    "tokenErrorMessage": "Invalid or expired token. Please try again later."
+  },
+  "signUpPage": {
+    "title": "Sign Up",
+    "description": "Please fill in the fields below to complete your registration.",
+    "inscription": "Submit",
+    "emailLabel": "Email",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "passwordLabel": "Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "errorEmailInput": "Please enter a valid email address.",
+    "errorSignUpMessage": "An error occurred during registration. Please try again later.",
+    "errorOTPEmail": "An error occurred while sending the email. Please try again later.",
+    "errorOTPMessage": "Incorrect OTP code. Please try again.",
+    "errorConfirmPasswordMessage": "The password and confirmation do not match.",
+    "passwordRequirement": {
+      "length": "At least 8 characters.",
+      "uppercase": "At least one uppercase letter.",
+      "lowercase": "At least one lowercase letter.",
+      "number": "At least one number.",
+      "specialChar": "At least one special character (@ $ ! % * ? &)."
+    }
+  },
+  "OTPDialog": {
+    "title": "OTP Validation Code",
+    "description": "Please enter the code provided in the email you received.",
+    "OTP": "OTP Code",
+    "OTPButton": "Validate",
+    "successMessage": "Your account is now active. You will be redirected to the login page in a few seconds."
   }
 }

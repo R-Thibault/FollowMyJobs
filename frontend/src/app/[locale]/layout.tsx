@@ -5,6 +5,7 @@ import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import LangageSelector from "@/components/moleculs/LangageSelector";
 
 export async function generateMetadata({
   params,
@@ -46,8 +47,11 @@ export default async function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#ffffff" /> */}
       </head>
-      <body className="mx-auto min-h-screen ">
+      <body className="relative mx-auto min-h-screen">
         <NextIntlClientProvider messages={messages}>
+          <div className="fixed right-6 top-6 z-50">
+            <LangageSelector />
+          </div>
           {children}
         </NextIntlClientProvider>
       </body>
