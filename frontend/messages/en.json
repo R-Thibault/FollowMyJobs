@@ -1,0 +1,84 @@
+{
+  "welcome": {
+    "welcome": "Hello there !"
+  },
+  "homePage": {
+    "title": "Organize Your Job Applications Effortlessly",
+    "description": "Stay on top of your job search with ease and efficiency.",
+    "cta": "Get Started Now",
+    "nav": {
+      "home": "Home",
+      "getStarted": "Get Started",
+      "contact": "Contact"
+    }
+  },
+  "loginPage": {
+    "welcomeTitle": "Welcome to FollowMyJobs!",
+    "welcomeText1": "Track your job applications, organize opportunities, and optimize your job search with our intuitive platform.",
+    "welcomeText2": "Create personalized tracking boards and receive reminders for interviews.",
+    "welcomeText3": "Join us today and take control of your career!",
+    "title": "Login",
+    "description": "Enter your email below to login to your account.",
+    "emailLabel": "email",
+    "passwordLabel": "password",
+    "forgotPassword": "Forgot your password?",
+    "loginbtn": "Login",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "errorMessageUnexpected": "An unexpected error occurred. Please try again.",
+    "errorMessageLogin": "Email or password incorect. Please try again."
+  },
+  "forgotPasswordPage": {
+    "emailLabel": "email",
+    "resetPswdModalTitle": "Reset your password",
+    "resetPswdModalDescription": "Enter your email below, an email will be sent with a link to reset your password.",
+    "resetPswdModalAction": "Send email",
+    "errorMessageResetPswd": "Please enter a valid email address.",
+    "resetPswdModalSuccessTitle": "Email sent",
+    "resetPswdModalSuccessMessage": "Your password reset request has been successfully received. If the email address associated with your account is correct, you will soon receive an email containing a secure link to reset your password.\n\nPlease check your inbox and spam folder.\n\nIf you did not initiate this request, please ignore this email or contact us immediately.",
+    "resetPswdModalSuccessClose": "Close",
+    "redirectHomePage": "Return to Login Page"
+  },
+  "resetPasswordPage": {
+    "emailLabel": "email",
+    "resetPswdModalTitle": "Reset your password",
+    "resetPswdModalDescription": "Enter your email below, an email will be sent with a link to reset your password.",
+    "resetPswdModalAction": "Send email",
+    "errorMessageResetPswd": "Please enter a valid email address.",
+    "resetPswdModalSuccessTitle": "Email sent",
+    "resetPswdModalSuccessMessage": "Your password reset request has been successfully received. If the email address associated with your account is correct, you will soon receive an email containing a secure link to reset your password.\n\nPlease check your inbox and spam folder.\n\nIf you did not initiate this request, please ignore this email or contact us immediately.",
+    "resetPswdModalSuccessClose": "Close",
+    "redirectHomePage": "Return to Login Page",
+    "tokenVerificationWait": "Token verification in progress...",
+    "tokenErrorMessage": "Invalid or expired token. Please try again later."
+  },
+  "signUpPage": {
+    "title": "Sign Up",
+    "description": "Please fill in the fields below to complete your registration.",
+    "inscription": "Submit",
+    "emailLabel": "Email",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "passwordLabel": "Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "errorEmailInput": "Please enter a valid email address.",
+    "errorSignUpMessage": "An error occurred during registration. Please try again later.",
+    "errorOTPEmail": "An error occurred while sending the email. Please try again later.",
+    "errorOTPMessage": "Incorrect OTP code. Please try again.",
+    "errorConfirmPasswordMessage": "The password and confirmation do not match.",
+    "passwordRequirement": {
+      "length": "At least 8 characters.",
+      "uppercase": "At least one uppercase letter.",
+      "lowercase": "At least one lowercase letter.",
+      "number": "At least one number.",
+      "specialChar": "At least one special character (@ $ ! % * ? &)."
+    }
+  },
+  "OTPDialog": {
+    "title": "OTP Validation Code",
+    "description": "Please enter the code provided in the email you received.",
+    "OTP": "OTP Code",
+    "OTPButton": "Validate",
+    "successMessage": "Your account is now active. You will be redirected to the login page in a few seconds."
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "welcome": {
+    "welcome": "Bonjour !"
+  },
+  "homePage": {
+    "title": "Organisez vos candidatures sans effort",
+    "description": "Restez au top de votre recherche d'emploi avec facilité et efficacité.",
+    "cta": "Commencez maintenant",
+    "nav": {
+      "home": "Accueil",
+      "getStarted": "Commencer",
+      "contact": "Contact"
+    }
+  },
+  "loginPage": {
+    "welcomeTitle": "Bienvenue sur FollowMyJobs!",
+    "welcomeText1": "Suivez vos candidatures, organisez vos opportunités et optimisez votre recherche d'emploi grâce à notre plateforme intuitive.",
+    "welcomeText2": "Créez des tableaux de suivi personnalisés et recevez des rappels pour vos entretiens.",
+    "welcomeText3": "Rejoignez-nous dès aujourd'hui et prenez le contrôle de votre carrière!",
+    "title": "Connexion",
+    "description": "Entrez votre email ci-dessous pour vous connecter à votre compte.",
+    "emailLabel": "email",
+    "passwordLabel": "mot de passe",
+    "forgotPassword": "mot de passe oublier?",
+    "loginbtn": "Connexion",
+    "noAccount": "Vous n'avez pas de compte?",
+    "signUp": "S'inscrire",
+    "errorMessageUnexpected": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+    "errorMessageLogin": "Email ou mot de passe incorrect. Veuillez réessayer."
+  },
+  "forgotPasswordPage": {
+    "emailLabel": "email",
+    "resetPswdModalTitle": "Réinitialisez votre mot de passe",
+    "resetPswdModalDescription": "Entrez votre email ci-dessous, un email vous sera envoyé avec un lien pour réinitialiser votre mot de passe.",
+    "resetPswdModalAction": "Envoyer un e-mail",
+    "errorMessageResetPswd": "Veuillez entrer une adresse email valide.",
+    "resetPswdModalSuccessTitle": "Email envoyé",
+    "resetPswdModalSuccessMessage": "Votre demande de réinitialisation de mot de passe a bien été prise en compte. Si l'adresse e-mail associée à votre compte est correcte, vous recevrez sous peu un e-mail contenant un lien sécurisé pour réinitialiser votre mot de passe.\n\nVeuillez vérifier votre boîte de réception ainsi que votre dossier de courrier indésirable.\n\nSi vous n'avez pas initié cette demande, veuillez ignorer cet e-mail ou nous contacter immédiatement.",
+    "resetPswdModalSuccessClose": "Fermer",
+    "redirectHomePage": "Revenir à la page de connexion"
+  },
+  "resetPasswordPage": {
+    "emailLabel": "email",
+    "passwordLabel": "mot de passe",
+    "confirmPasswordLabel": "confirmez votre mot de passe",
+    "resetPswdModalTitle": "Réinitialisez votre mot de passe",
+    "resetPswdModalDescription": "Entrez votre email ci-dessous, un email vous sera envoyé avec un lien pour réinitialiser votre mot de passe.",
+    "resetPswdModalAction": "Envoyer un e-mail",
+    "errorMessageResetPswd": "Veuillez entrer une adresse email valide.",
+    "resetPswdModalSuccessTitle": "Email envoyé",
+    "resetPswdModalSuccessMessage": "Votre demande de réinitialisation de mot de passe a bien été prise en compte. Si l'adresse e-mail associée à votre compte est correcte, vous recevrez sous peu un e-mail contenant un lien sécurisé pour réinitialiser votre mot de passe.\n\nVeuillez vérifier votre boîte de réception ainsi que votre dossier de courrier indésirable.\n\nSi vous n'avez pas initié cette demande, veuillez ignorer cet e-mail ou nous contacter immédiatement.",
+    "resetPswdModalSuccessClose": "Fermer",
+    "redirectHomePage": "Revenir à la page de connexion",
+    "tokenVerificationWait": "Vérification du token en cours...",
+    "tokenErrorMessage": "Token invalide ou expiré. Veuillez réessayer ultérieurement."
+  },
+  "signUpPage": {
+    "title": "Inscription",
+    "description": "Veuillez remplir les champs ci-dessous pour compléter votre inscription.",
+    "inscription": "Valider",
+    "emailLabel": "Email",
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "passwordLabel": "Mot de passe",
+    "confirmPasswordLabel": "Confirmez votre mot de passe",
+    "errorEmailInput": "Veuillez saisir une adresse email valide.",
+    "errorSignUpMessage": "Une erreur s'est produite durant l'inscription. Veuillez réessayer ultérieurement.",
+    "errorOTPEmail": "Une erreur est survenue lors de l'envoi de l'email. Veuillez réessayer ultérieurement.",
+    "errorOTPMessage": "Code OTP incorrect. Veuillez réessayer.",
+    "errorConfirmPasswordMessage": "Le mot de passe et la confirmation ne correspondent pas.",
+    "passwordRequirement": {
+      "length": "Au moins 8 caractères.",
+      "uppercase": "Au moins une lettre majuscule.",
+      "lowercase": "Au moins une lettre minuscule.",
+      "number": "Au moins un chiffre.",
+      "specialChar": "Au moins un caractère spécial (@ $ ! % * ? &)."
+    }
+  },
+  "OTPDialog": {
+    "title": "Code de validation OTP",
+    "description": "Veuillez saisir le code fourni dans l'email que vous avez reçu.",
+    "OTP": "Code OTP",
+    "OTPButton": "Valider",
+    "successMessage": "Votre compte est maintenant actif. Redirection automatique vers la page de connexion dans quelques secondes."
+  }
+}
