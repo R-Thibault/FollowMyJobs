@@ -134,7 +134,7 @@ func TestLogout_LogoutSuccess(t *testing.T) {
 	c.Request, _ = http.NewRequest(http.MethodPost, "/logout", bytes.NewBuffer(body))
 	c.Request.Header.Set("Content-type", "application/json")
 	c.Request.AddCookie(&http.Cookie{
-		Name:  "token",
+		Name:  "auth_token",
 		Value: "mockTokenValue", // Use a mock token value for the test
 		Path:  "/",
 	})
