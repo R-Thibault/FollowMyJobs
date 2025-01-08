@@ -138,12 +138,30 @@ func (_m *UserServiceInterface) ResetPassword(user models.User, claims models.JW
 	return r0
 }
 
-// UpdateUserDetails provides a mock function with given fields: existingUser, updatedUserDatas
-func (_m *UserServiceInterface) UpdateUserDetails(existingUser models.User, updatedUserDatas models.UserProfileUpdate) error {
+// UpdateUserPassword provides a mock function with given fields: existingUser, updatedUserDatas
+func (_m *UserServiceInterface) UpdateUserPassword(existingUser models.User, updatedUserDatas models.UserPasswordUpdate) error {
 	ret := _m.Called(existingUser, updatedUserDatas)
 
 	if len(ret) == 0 {
-		panic("no return value specified for UpdateUserDetails")
+		panic("no return value specified for UpdateUserPassword")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(models.User, models.UserPasswordUpdate) error); ok {
+		r0 = rf(existingUser, updatedUserDatas)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// UpdateUserProfile provides a mock function with given fields: existingUser, updatedUserDatas
+func (_m *UserServiceInterface) UpdateUserProfile(existingUser models.User, updatedUserDatas models.UserProfileUpdate) error {
+	ret := _m.Called(existingUser, updatedUserDatas)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateUserProfile")
 	}
 
 	var r0 error

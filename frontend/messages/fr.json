@@ -82,5 +82,20 @@
     "OTP": "Code OTP",
     "OTPButton": "Valider",
     "successMessage": "Votre compte est maintenant actif. Redirection automatique vers la page de connexion dans quelques secondes."
+  },
+  "profilePage": {
+    "errorLoading": "Erreur lors du chargement des données.",
+    "errorEmptyInput": "Veuillez remplir tous les champs.",
+    "successResetPassword": "Lien de réinitialisation du mot de passe envoyé avec succès.",
+    "successUpdateProfile": "Profil mis à jour avec succès.",
+    "errorResetPassword": "Erreur lors de l'envoi du lien de réinitialisation du mot de passe.",
+    "errorUpdateProfile": "Erreur lors de la mise à jour du profil.",
+    "lastName": "Nom de famille",
+    "firstName": "Prénom",
+    "email": "E-mail",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "updateInformations": "Mettre à jour les informations",
+    "resetPassword": "Réinitialiser le mot de passe"
   }
 }
