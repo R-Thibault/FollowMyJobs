@@ -71,7 +71,8 @@ func SetupRoutes(router *gin.Engine) {
 	protected.Use(middleware.AuthMiddleware())
 
 	protected.GET("/me", UserController.MyProfile)
-	// protected.POST("/update-user", UserController.UpdateUserProfile)
+	protected.POST("/update-user-password", UserController.UpdateUserPassword)
+	protected.POST("/update-user-profile", UserController.UpdateUserProfile)
 	protected.GET("/application/:id", ApplicationController.GetApplicationByID)
 	protected.POST("/create-application", ApplicationController.SaveApplication)
 	protected.GET("/applications-by-user", ApplicationController.GetAllApplicationsByUserID)

@@ -92,7 +92,7 @@ func (a *AuthController) Login(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("token", tokenString, 36000, "/", "localhost", false, true)
+	c.SetCookie("auth_token", tokenString, 36000, "/", "localhost", false, true)
 
 	c.JSON(http.StatusOK, gin.H{"message": "Sign in successful"})
 
@@ -100,7 +100,7 @@ func (a *AuthController) Login(c *gin.Context) {
 
 func (a *AuthController) Logout(c *gin.Context) {
 
-	_, err := c.Cookie("token")
+	_, err := c.Cookie("auth_token")
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "No token found"})
 		return

@@ -17,7 +17,7 @@ import (
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Attempt to retrieve the token from cookies
-		tokenString, err := c.Cookie("token")
+		tokenString, err := c.Cookie("auth_token")
 		if err != nil {
 			log.Println("No token provided")
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "No token provided"})

@@ -11,11 +11,11 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import axios from "axios";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import Link from "next/link";
+import axiosInstance from "@/lib/axiosInstance";
 
 export function LoginForm({
   className,
@@ -37,8 +37,8 @@ export function LoginForm({
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:8080/login",
+      const response = await axiosInstance.post(
+        "/login",
         {
           email: email,
           password: password,
@@ -46,8 +46,9 @@ export function LoginForm({
         { withCredentials: true }
       );
       if (response.status === 200) {
-        router.push(`/${locale}/dashboard`);
-        router.refresh();
+        setTimeout(() => {
+          router.push(`/${locale}/dashboard`);
+        }, 100);
       } else {
         setErrorMessageUnexpected(true);
       }

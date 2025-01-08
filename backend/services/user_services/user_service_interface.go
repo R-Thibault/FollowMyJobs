@@ -38,14 +38,14 @@ type UserServiceInterface interface {
 	// - error: An error if the user could not be retrieved.
 	GetUserByUUID(userUUID string) (*models.User, error)
 
-	// UpdateUserDetails updates the details of an existing user.
-	// It returns an error if the user details could not be updated.
+	// UpdateUserPassword updates the password of an existing user.
+	// It returns an error if the password could not be updated.
 	// Parameters:
-	// - existingUser: The current user details.
-	// - updatedUserDatas: The new user details to update.
+	// - existingUser: The current user model.
+	// - updatedUserDatas: The password update data containing the new password.
 	// Returns:
-	// - error: An error if the user details could not be updated.
-	UpdateUserDetails(existingUser models.User, updatedUserDatas models.UserProfileUpdate) error
+	// - error: An error if the password could not be updated.
+	UpdateUserPassword(existingUser models.User, updatedUserDatas models.UserPasswordUpdate) error
 
 	// ResetPassword resets the password for a given user.
 	// It returns an error if the password could not be reset.
@@ -56,4 +56,13 @@ type UserServiceInterface interface {
 	// Returns:
 	// - error: An error if the password could not be reset.
 	ResetPassword(user models.User, claims models.JWTToken, newPassword string) error
+
+	// UpdateUserProfile updates the profile of an existing user.
+	// It returns an error if the email is empty.
+	// Parameters:
+	// - existingUser: The current user model.
+	// - updatedUserDatas: The update data .
+	// Returns:
+	// - error: An error if the datas could not be updated.
+	UpdateUserProfile(existingUser models.User, updatedUserDatas models.UserProfileUpdate) error
 }
