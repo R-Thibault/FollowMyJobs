@@ -80,5 +80,20 @@
     "OTP": "OTP Code",
     "OTPButton": "Validate",
     "successMessage": "Your account is now active. You will be redirected to the login page in a few seconds."
+  },
+  "profilePage": {
+    "errorLoading": "Error loading data.",
+    "errorEmptyInput": "Please fill in all fields.",
+    "successResetPassword": "Password reset link sent successfully.",
+    "successUpdateProfile": "Profile updated successfully.",
+    "errorResetPassword": "Error sending password reset link.",
+    "errorUpdateProfile": "Error updating profile.",
+    "lastName": "Last Name",
+    "firstName": "First Name",
+    "email": "Email",
+    "save": "Save",
+    "cancel": "Cancel",
+    "updateInformations": "Update informations",
+    "resetPassword": "Reset password"
   }
 }

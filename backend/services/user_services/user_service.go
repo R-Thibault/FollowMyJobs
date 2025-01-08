@@ -46,7 +46,7 @@ func (s *UserService) GetUserByUUID(userUUID string) (*models.User, error) {
 	return s.UserRepo.GetUserByUUID(userUUID)
 }
 
-func (s *UserService) UpdateUserDetails(existingUser models.User, updatedUserDatas models.UserProfileUpdate) error {
+func (s *UserService) UpdateUserPassword(existingUser models.User, updatedUserDatas models.UserPasswordUpdate) error {
 	if updatedUserDatas.Email == "" {
 		return errors.New("Email can't be empty")
 	}
@@ -101,4 +101,17 @@ func (s *UserService) ResetPassword(user models.User, claims models.JWTToken, ne
 		return errors.New("OTP codes do not match")
 	}
 
+}
+
+func (s *UserService) UpdateUserProfile(existingUser models.User, updatedUserDatas models.UserProfileUpdate) error {
+	if updatedUserDatas.Email == "" {
+		return errors.New("Email can't be empty")
+	}
+
+	updatedUser := models.User{
+		Email:     updatedUserDatas.Email,
+		FirstName: updatedUserDatas.FirstName,
+		LastName:  updatedUserDatas.LastName,
+	}
+	return s.UserRepo.UpdateUser(existingUser.ID, updatedUser)
 }

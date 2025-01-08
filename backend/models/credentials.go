@@ -3,6 +3,8 @@ package models
 // Credentials struct, for SignIn - SignUp - auth_middleware
 type Credentials struct {
 	Email           string `json:"email"`
+	FirstName       string `json:"firstname"`
+	LastName        string `json:"lastname"`
 	Password        string `json:"password"`
 	ConfirmPassword string `json:"confirmPassword"`
 }
