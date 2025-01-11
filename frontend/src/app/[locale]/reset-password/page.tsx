@@ -13,6 +13,7 @@ import { useLocale, useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import axiosInstance from "@/lib/axiosInstance";
+import toast from "react-hot-toast";
 
 export default function Page() {
   const [emailResetPassword, setEmailResetPassword] = useState<string>("");
@@ -65,11 +66,13 @@ export default function Page() {
         setIsTokenValid(true);
       } else {
         setErrorTokenMessage(true);
+        toast.error(t("errorTokenMessage"));
         setIsTokenValid(false);
       }
     } catch (error) {
       console.log("Error verifying token:", error);
       setErrorTokenMessage(true);
+      toast.error(t("errorTokenMessage"));
       setIsTokenValid(false);
     }
   };
@@ -91,6 +94,7 @@ export default function Page() {
     } catch {
       setSuccessMessage(false);
       setErrorMessage(true);
+      toast.error(t("errorMessageResetPswd"));
     }
   };
 

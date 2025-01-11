@@ -19,7 +19,6 @@ export default function HomePage() {
         </div>
         {/* Desktop Nav Links */}
         <div className="hidden md:flex text-lg space-x-4 justify-center items-center">
-          <a href="#">{t("nav.home")}</a>
           <a href="#">{t("nav.getStarted")}</a>
           <a href="#">{t("nav.contact")}</a>
         </div>

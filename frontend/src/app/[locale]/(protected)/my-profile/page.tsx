@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2, Edit3, Save, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import toast from "react-hot-toast";
 
 export default function MyProfilePage() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -66,14 +67,17 @@ export default function MyProfilePage() {
       );
       if (response.status === 200) {
         setSuccessUpdateProfile(true);
+
         setErrorUpdateProfile(false);
         setIsEditing(false);
       }
     } catch {
       setSuccessUpdateProfile(false);
       setErrorUpdateProfile(true);
+      toast.error(t("errorUpdateProfile"));
     } finally {
       setSaving(false);
+      toast.success(t("successUpdateProfile"));
     }
   };
 
@@ -87,11 +91,13 @@ export default function MyProfilePage() {
       });
       if (response.data) {
         setSuccessResetPassword(true);
+        toast.success(t("successResetPassword"));
         setErrorResetPassword(false);
       }
     } catch {
       setSuccessResetPassword(false);
       setErrorResetPassword(true);
+      toast.error(t("errorResetPassword"));
     }
   };
 

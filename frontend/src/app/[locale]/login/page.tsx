@@ -5,7 +5,7 @@ import { LoginForm } from "@/components/organisms/login-form";
 import { useTranslations } from "next-intl";
 
 export default function Login() {
-  const t = useTranslations("loginPage"); // Hook pour traductions
+  const t = useTranslations("loginPage");
 
   return (
     <div className="flex min-h-svh w-full">

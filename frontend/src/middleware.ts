@@ -19,8 +19,9 @@ const intlMiddleware = createMiddleware(routing);
 export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const token = req.cookies.get("auth_token")?.value;
-  const locale = req.nextUrl.locale || "en"; // Default locale fallback
-
+  // Extract locale from pathname instead of forcing a default
+  const localeMatch = pathname.match(/^\/(fr|en)/);
+  const locale = localeMatch ? localeMatch[1] : "en";
   //  Allow all language root paths without a token
   const isHomepage = pathname === `/${locale}`;
 
