@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import Link from "next/link";
 import axiosInstance from "@/lib/axiosInstance";
+import { toast } from "react-hot-toast";
 
 export function LoginForm({
   className,
@@ -23,7 +24,7 @@ export function LoginForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState<boolean>(false);
+  const [errorMessageLogin, setErrorMessageLogin] = useState<boolean>(false);
   const [errorMessageUnexpected, setErrorMessageUnexpected] =
     useState<boolean>(false);
 
@@ -51,9 +52,12 @@ export function LoginForm({
         }, 100);
       } else {
         setErrorMessageUnexpected(true);
+        toast.error(t("errorMessageUnexpected"));
       }
     } catch {
-      setErrorMessage(true);
+      console.log("ERROR");
+      setErrorMessageLogin(true);
+      toast.error(t("errorMessageLogin"));
     }
   };
   return (
@@ -95,7 +99,7 @@ export function LoginForm({
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              {errorMessage && (
+              {errorMessageLogin && (
                 <p className="text-red-500 mt-2">{t("errorMessageLogin")}</p>
               )}
               {errorMessageUnexpected && (

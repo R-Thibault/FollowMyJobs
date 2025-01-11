@@ -3,21 +3,26 @@ import Link from "next/link";
 import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import axiosInstance from "@/lib/axiosInstance";
+import { Button } from "../ui/button";
 
 export default function Navbar() {
   const locale = useLocale();
   const router = useRouter();
 
   const handleLogout = async () => {
-    // ✅ Clear the token and redirect to login
     try {
-      const response = await axiosInstance.post("logout");
-      if (response.status !== 200) {
-        console.log("error");
+      const response = await axiosInstance.post(
+        "http://localhost:8080/logout",
+        {},
+        { withCredentials: true }
+      );
+
+      if (response.data && response.data.message === "Logout successful") {
+        router.push(`/${locale}/login`);
       }
-      router.push(`/${locale}/login`);
     } catch (error) {
-      console.log(error);
+      console.error("Error during Logout:", error);
+      alert("Failed to Logout");
     }
   };
 
@@ -26,7 +31,7 @@ export default function Navbar() {
       <Link href={`/${locale}/dashboard`}>Dashboard</Link>
       <Link href={`/${locale}/my-profile`}>My Profile</Link>
       <Link href={`/${locale}/settings`}>Settings</Link>
-      <button onClick={handleLogout}>Logout</button>
+      <Button onClick={handleLogout}>Logout</Button>
     </nav>
   );
 }

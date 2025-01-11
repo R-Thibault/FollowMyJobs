@@ -33,7 +33,6 @@ export default async function DashboardLayout({
     if (response.status !== 200) {
       redirect(`/${params.locale}/login`);
     }
-    console.log(response.data);
   } catch (error) {
     console.log("Token validation error:", error);
     redirect(`/${params.locale}/login`);
