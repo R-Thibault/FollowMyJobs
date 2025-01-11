@@ -13,6 +13,7 @@ import { useLocale, useTranslations } from "next-intl";
 import React, { useState } from "react";
 import Link from "next/link";
 import axiosInstance from "@/lib/axiosInstance";
+import toast from "react-hot-toast";
 
 export default function Page() {
   const [emailResetPassword, setEmailResetPassword] = useState<string>("");
@@ -33,9 +34,11 @@ export default function Page() {
       });
       if (response.data) {
         setSuccessMessage(true);
+        toast.success(t("resetPswdModalSuccessMessage"));
       }
     } catch (error) {
-      setSuccessMessage(true);
+      setErrorMessage(true);
+      toast.error(t("errorMessageResetPswd"));
       console.log(error);
     }
   };
