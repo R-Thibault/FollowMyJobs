@@ -119,61 +119,104 @@ func (app *ApplicationController) GetApplicationByID(c *gin.Context) {
 }
 
 func (app *ApplicationController) GetAllApplicationsByUserID(c *gin.Context) {
-	// Get additionnal setting for query
 	var requestSettings models.RequestSettings
-	limit, err := strconv.Atoi(c.Param("page_size"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid page size"})
+
+	// Parsing limit and offset
+	limitStr := c.DefaultQuery("limit", "10")
+	offSetStr := c.DefaultQuery("offset", "0")
+
+	limit, err := strconv.Atoi(limitStr)
+	if err != nil || limit <= 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid page_size"})
 		return
 	}
-	offSet, err := strconv.Atoi(c.Param("page"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid page size"})
+
+	offSet, err := strconv.Atoi(offSetStr)
+	if err != nil || offSet < 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid page number"})
 		return
 	}
+
 	requestSettings.Limit = limit
 	requestSettings.OffSet = offSet
 
+	// Parsing optional filters
+	title := c.Query("title")
+	if title != "" {
+		requestSettings.Title = &title
+	}
+
+	orderByCreatedAt := c.DefaultQuery("orderByCreatedAt", "asc")
+	requestSettings.OrderByCreatedAt = orderByCreatedAt
+
+	// Parsing Status as optional booleans
+	appliedStr := c.Query("applied")
+	if appliedStr != "" {
+		applied, _ := strconv.ParseBool(appliedStr)
+		requestSettings.Status.Applied = &applied
+	}
+
+	responseStr := c.Query("response")
+	if responseStr != "" {
+		response, _ := strconv.ParseBool(responseStr)
+		requestSettings.Status.Response = &response
+	}
+
+	followUpStr := c.Query("followUp")
+	if followUpStr != "" {
+		followUp, _ := strconv.ParseBool(followUpStr)
+		requestSettings.Status.FollowUp = &followUp
+	}
+
+	// Retrieve userUUID from Gin context
 	userUUID, exists := c.Get("userUUID")
 	if !exists {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "UserUUID not Found in context"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "UserUUID not found in context"})
 		return
 	}
 	userUUIDStr, ok := userUUID.(string)
 	if !ok {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "UserUUID in context is not a a valid string"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "UserUUID is not a valid string"})
 		return
 	}
+
+	// Validate user
 	existingUser, err := app.UserService.GetUserByUUID(userUUIDStr)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "UserUUID do not match a user"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "UserUUID does not match any user"})
 		return
 	}
+
+	// Fetch applications based on the validated user ID and request settings
 	applications, totalItems, err := app.ApplicationService.GetApplicationsByUserID(existingUser.ID, requestSettings)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Can't find applications for this user"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Unable to retrieve applications"})
 		return
 	}
+
+	// Calculate total pages for pagination
 	totalPages := (totalItems + int64(requestSettings.Limit) - 1) / int64(requestSettings.Limit)
 
+	// Build the response safely handling pointers
 	response := gin.H{
 		"datas": applications,
-		"pagintation": gin.H{
+		"pagination": gin.H{
 			"current_page": requestSettings.OffSet,
 			"page_size":    requestSettings.Limit,
 			"total_pages":  totalPages,
 			"total_items":  totalItems,
 		},
 		"filter": gin.H{
-			"title":            *requestSettings.Title,
+			"title":            title,
 			"orderByCreatedAt": requestSettings.OrderByCreatedAt,
 			"status": gin.H{
-				"applied":  *requestSettings.Status.Applied,
-				"response": *requestSettings.Status.Response,
-				"followUp": *requestSettings.Status.FollowUp,
+				"applied":  appliedStr != "" && *requestSettings.Status.Applied,
+				"response": responseStr != "" && *requestSettings.Status.Response,
+				"followUp": followUpStr != "" && *requestSettings.Status.FollowUp,
 			},
 		},
 	}
+
 	c.JSON(http.StatusOK, response)
 }
 
