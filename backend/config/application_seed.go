@@ -36,9 +36,9 @@ func SeedDatabaseWithApplications(db *gorm.DB) error {
 		}
 
 		// Only seed new applications if there are fewer than 10 existing applications
-		if applicationCount < 10 {
+		if applicationCount < 40 {
 			// Determine how many applications to add to reach 10
-			numApplications := int(10 - applicationCount)
+			numApplications := int(40 - applicationCount)
 			for i := 0; i < numApplications; i++ {
 				application := models.Application{
 					UserID:      user.ID,
