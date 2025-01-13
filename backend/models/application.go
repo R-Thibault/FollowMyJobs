@@ -12,7 +12,7 @@ type Application struct {
 	Company     string `gorm:"size:255"`
 	Location    string `gorm:"size:255"`
 	Description string
-	Salary      string `gorm:"size:255"`
+	Salary      int
 	JobType     string `gorm:"size:255"`
 	Applied     bool   `gorm:"default:true"`
 	Response    bool   `gorm:"default:false"`

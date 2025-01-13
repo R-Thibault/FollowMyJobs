@@ -61,7 +61,6 @@ export default function Page() {
       const response = await axiosInstance.post("/verify-reset-password-link", {
         token,
       });
-      console.log(response.data);
       if (response.data) {
         setIsTokenValid(true);
       } else {
@@ -70,7 +69,7 @@ export default function Page() {
         setIsTokenValid(false);
       }
     } catch (error) {
-      console.log("Error verifying token:", error);
+      console.error("Error verifying token:", error);
       setErrorTokenMessage(true);
       toast.error(t("errorTokenMessage"));
       setIsTokenValid(false);
