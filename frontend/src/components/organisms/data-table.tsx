@@ -34,7 +34,11 @@ import { Input } from "@/components/ui/input";
 import { ChevronDown } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+  columns:
+    | ColumnDef<TData, TValue>[]
+    | ((props: {
+        onSortChange: (sortBy: string, sortOrder: string) => void;
+      }) => ColumnDef<TData, TValue>[]);
   data: TData[];
   pagination: {
     current_page: number;
@@ -43,6 +47,11 @@ interface DataTableProps<TData, TValue> {
     total_items: number;
   };
   onPageChange: (page: number, pageSize: number) => void;
+  onSortChange: (sortBy: string, sortOrder: string) => void;
+  currentSortBy: string;
+  currentSortOrder: string;
+  onSearchTitle: (titleSearchParam: string) => void;
+  titleSearchParam: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -50,17 +59,26 @@ export function DataTable<TData, TValue>({
   data,
   pagination,
   onPageChange,
+  onSortChange,
+  currentSortBy,
+  currentSortOrder,
+  onSearchTitle,
+  titleSearchParam,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const [searchValue, setSearchValue] = React.useState<string>("");
+  const columnDefs = Array.isArray(columns)
+    ? columns
+    : columns({ onSortChange });
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
   const table = useReactTable({
     data,
-    columns,
+    columns: columnDefs,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -82,10 +100,12 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter title..."
-          value={(table.getColumn("Title")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("Title")?.setFilterValue(event.target.value)
-          }
+          value={searchValue}
+          onChange={(event) => {
+            onSearchTitle(event.target.value);
+            // table.getColumn("Title")?.setFilterValue(event.target.value);
+            setSearchValue(event.target.value);
+          }}
           className="max-w-sm"
         />
         <DropdownMenu>
@@ -120,18 +140,30 @@ export function DataTable<TData, TValue>({
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.column.columnDef.enableSorting ? (
+                      <button
+                        onClick={() =>
+                          onSortChange(
+                            header.column.id,
+                            currentSortOrder === "asc" ? "desc" : "asc"
+                          )
+                        }
+                      >
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </button>
+                    ) : (
+                      flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )
+                    )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -153,6 +185,16 @@ export function DataTable<TData, TValue>({
                 </TableRow>
               ))
             ) : (
+              // {data.length > 0 ? (
+              //   data.map((row, index) => (
+              //     <TableRow key={index}>
+              //       {columnDefs.map((col) => (
+              //         <TableCell key={col.id as string}>
+              //           {flexRender(col.cell as any, row)}
+              //         </TableCell>
+              //       ))}
+              //     </TableRow>
+              //   ))
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
@@ -164,9 +206,9 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-        {/* Pagination Controls */}
         <div className="flex items-center justify-between mt-4">
           <Button
+            className="m-2"
             variant="outline"
             onClick={() =>
               onPageChange(pagination.current_page - 1, pagination.page_size)
@@ -179,6 +221,7 @@ export function DataTable<TData, TValue>({
             Page {pagination.current_page} of {pagination.total_pages}
           </p>
           <Button
+            className="m-2"
             variant="outline"
             onClick={() =>
               onPageChange(pagination.current_page + 1, pagination.page_size)

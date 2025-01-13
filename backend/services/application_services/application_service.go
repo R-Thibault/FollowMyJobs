@@ -2,6 +2,7 @@ package applicationservices
 
 import (
 	"errors"
+	"log"
 
 	"github.com/R-Thibault/FollowMyJobs/backend/models"
 	applicationrepository "github.com/R-Thibault/FollowMyJobs/backend/repository/application_repository"
@@ -52,6 +53,7 @@ func (s *ApplicationService) GetApplicationsByUserID(userID uint, requestSetting
 
 	applications, totalItems, err := s.ApplicationRepo.GetApplicationsByUserID(userID, requestSettings)
 	if err != nil {
+		log.Printf("Service err: %v", err)
 		return nil, 0, errors.New("Can't find applications with this userID")
 	}
 	return applications, totalItems, nil

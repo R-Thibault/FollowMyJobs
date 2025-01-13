@@ -140,32 +140,33 @@ func (app *ApplicationController) GetAllApplicationsByUserID(c *gin.Context) {
 	requestSettings.Limit = limit
 	requestSettings.OffSet = offSet
 
-	// Parsing optional filters
-	title := c.Query("title")
+	// Sorting logic with validation
+	allowedSortFields := map[string]bool{
+		"created_at": true,
+		"location":   true,
+		"title":      true,
+		"salary":     true,
+		"url":        true,
+		"updated_at": true,
+	}
+
+	// Default sorting
+	sortBy := c.DefaultQuery("sortBy", "updated_at") // Default to updated_at
+	if !allowedSortFields[sortBy] {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid sort field"})
+		return
+	}
+	sortOrder := c.DefaultQuery("sortOrder", "desc")
+	if sortOrder != "asc" && sortOrder != "desc" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid sort order"})
+		return
+	}
+	requestSettings.SortBy = sortBy
+	requestSettings.SortOrder = sortOrder
+
+	title := c.Query("titleSearch")
 	if title != "" {
 		requestSettings.Title = &title
-	}
-
-	orderByCreatedAt := c.DefaultQuery("orderByCreatedAt", "asc")
-	requestSettings.OrderByCreatedAt = orderByCreatedAt
-
-	// Parsing Status as optional booleans
-	appliedStr := c.Query("applied")
-	if appliedStr != "" {
-		applied, _ := strconv.ParseBool(appliedStr)
-		requestSettings.Status.Applied = &applied
-	}
-
-	responseStr := c.Query("response")
-	if responseStr != "" {
-		response, _ := strconv.ParseBool(responseStr)
-		requestSettings.Status.Response = &response
-	}
-
-	followUpStr := c.Query("followUp")
-	if followUpStr != "" {
-		followUp, _ := strconv.ParseBool(followUpStr)
-		requestSettings.Status.FollowUp = &followUp
 	}
 
 	// Retrieve userUUID from Gin context
@@ -190,6 +191,7 @@ func (app *ApplicationController) GetAllApplicationsByUserID(c *gin.Context) {
 	// Fetch applications based on the validated user ID and request settings
 	applications, totalItems, err := app.ApplicationService.GetApplicationsByUserID(existingUser.ID, requestSettings)
 	if err != nil {
+		log.Printf("Controller err: %v", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Unable to retrieve applications"})
 		return
 	}
@@ -206,14 +208,9 @@ func (app *ApplicationController) GetAllApplicationsByUserID(c *gin.Context) {
 			"total_pages":  totalPages,
 			"total_items":  totalItems,
 		},
-		"filter": gin.H{
-			"title":            title,
-			"orderByCreatedAt": requestSettings.OrderByCreatedAt,
-			"status": gin.H{
-				"applied":  appliedStr != "" && *requestSettings.Status.Applied,
-				"response": responseStr != "" && *requestSettings.Status.Response,
-				"followUp": followUpStr != "" && *requestSettings.Status.FollowUp,
-			},
+		"sort": gin.H{
+			"sortBy":    requestSettings.SortBy,
+			"sortOrder": requestSettings.SortOrder,
 		},
 	}
 

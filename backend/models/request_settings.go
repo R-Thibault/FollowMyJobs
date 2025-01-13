@@ -7,9 +7,10 @@ type Status struct {
 }
 
 type RequestSettings struct {
-	Limit            int     `json:"limit"`
-	OffSet           int     `json:"offSet"`
-	OrderByCreatedAt string  `json:"orderByCreatedAt"`
-	Title            *string `json:"title"`
-	Status           Status  `json:"status"`
+	Limit     int     `json:"limit"`
+	OffSet    int     `json:"offSet"`
+	Title     *string `json:"title"`
+	Status    Status  `json:"status"`
+	SortBy    string  `json:"sortBy"`
+	SortOrder string  `json:"sortOrder"`
 }
