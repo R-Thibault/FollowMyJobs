@@ -3,7 +3,6 @@ package config
 import (
 	"errors"
 	"log"
-	"strconv"
 
 	"github.com/R-Thibault/FollowMyJobs/backend/models"
 	"github.com/jaswdr/faker"
@@ -46,12 +45,12 @@ func SeedDatabaseWithApplications(db *gorm.DB) error {
 					Title:       fake.Company().JobTitle(),
 					Company:     fake.Company().Name(),
 					Location:    fake.Address().City(),
-					Description: fake.Lorem().Sentence(10),                    // 10 words as a short description
-					Salary:      strconv.Itoa(fake.IntBetween(30000, 120000)), // Random salary between 30k and 120k
-					JobType:     fake.Lorem().Word(),                          // Random word as job type
-					Applied:     true,                                         // Random boolean for applied
-					Response:    rand.Intn(2) == 1,                            // Random boolean for response
-					FollowUp:    rand.Intn(2) == 1,                            // Random boolean for follow-up
+					Description: fake.Lorem().Sentence(10),      // 10 words as a short description
+					Salary:      fake.IntBetween(30000, 120000), // Random salary between 30k and 120k
+					JobType:     fake.Lorem().Word(),            // Random word as job type
+					Applied:     true,                           // Random boolean for applied
+					Response:    rand.Intn(2) == 1,              // Random boolean for response
+					FollowUp:    rand.Intn(2) == 1,              // Random boolean for follow-up
 				}
 
 				// Insert the application into the database

@@ -55,7 +55,6 @@ export function LoginForm({
         toast.error(t("errorMessageUnexpected"));
       }
     } catch {
-      console.log("ERROR");
       setErrorMessageLogin(true);
       toast.error(t("errorMessageLogin"));
     }

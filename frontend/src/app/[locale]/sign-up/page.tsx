@@ -73,7 +73,6 @@ export default function Page() {
           setIsOtpModalOpen(true);
           setErrorSignUpMessage(false);
         } else {
-          console.log(response);
           setErrorOTPEmailMessage(true);
         }
       } else {

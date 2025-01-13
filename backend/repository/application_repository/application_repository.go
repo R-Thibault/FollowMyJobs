@@ -2,6 +2,8 @@ package applicationrepository
 
 import (
 	"errors"
+	"fmt"
+	"log"
 
 	"github.com/R-Thibault/FollowMyJobs/backend/models"
 	"gorm.io/gorm"
@@ -56,31 +58,44 @@ func (r *ApplicationRepository) GetApplicationsByUserID(userID uint, requestSett
 	if r.db == nil {
 		return nil, 0, errors.New("database connection is nil")
 	}
-	//Get TotalItems with a count before using limit/offset
+
 	var totalItems int64
-	r.db.Model(&models.Application{}).Where("user_id = ?", userID).Count(&totalItems)
-	// Query to return applications with Limit/Offset
 	var applications []*models.Application
-	result := r.db
-	result = result.Where("user_id = ?", userID)
+
+	// Count total applications (without limit/offset)
+	if err := r.db.Model(&models.Application{}).
+		Where("user_id = ?", userID).
+		Count(&totalItems).Error; err != nil {
+		return nil, 0, fmt.Errorf("error counting applications: %w", err)
+	}
+
+	// Apply filters and pagination for the data query
+	query := r.db.Model(&models.Application{}).
+		Where("user_id = ?", userID)
+
+	// Optional Title Filtering
 	if requestSettings.Title != nil {
-		result = result.Where("title LIKE ?", "%"+*requestSettings.Title+"%")
+		query = query.Where("LOWER(title) LIKE ?", "%"+*requestSettings.Title+"%")
 	}
-	if requestSettings.Status.Applied != nil {
-		result = result.Where("applied = ?", *requestSettings.Status.Applied)
+
+	// Apply Sorting with basic validation
+	if requestSettings.SortBy != "" && requestSettings.SortOrder != "" {
+
+		query = query.Order(fmt.Sprintf("%s %s", requestSettings.SortBy, requestSettings.SortOrder))
+	} else {
+		log.Printf("Repo err: %v", requestSettings.SortBy)
+		return nil, 0, errors.New("invalid sort field specified")
 	}
-	if requestSettings.Status.Response != nil {
-		result = result.Where("response = ?", *requestSettings.Status.Response)
-	}
-	if requestSettings.Status.FollowUp != nil {
-		result = result.Where("follow_up = ?", *requestSettings.Status.FollowUp)
-	}
-	result = result.Order("created_at " + requestSettings.OrderByCreatedAt).Limit(requestSettings.Limit).Offset(requestSettings.OffSet).Find(&applications)
-	if result.Error != nil {
-		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+
+	// Apply Limit and Offset for pagination
+	query = query.Limit(requestSettings.Limit).Offset(requestSettings.OffSet)
+
+	// Fetch the results
+	if err := query.Find(&applications).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, 0, gorm.ErrRecordNotFound
 		}
-		return nil, 0, result.Error
+		return nil, 0, fmt.Errorf("error fetching applications: %w", err)
 	}
 
 	return applications, totalItems, nil

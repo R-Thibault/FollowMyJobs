@@ -11,6 +11,7 @@ interface ApplicationModalProps {
     description: string;
     location: string;
     company: string;
+    salary: string;
     applied: boolean;
   };
   onChange: (
@@ -29,7 +30,6 @@ export default function ApplicationFormModal({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div className="relative bg-white p-6 rounded-md shadow-md w-96">
-        {/* Close button */}
         <button
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl font-bold"
           onClick={onClose}
@@ -38,21 +38,19 @@ export default function ApplicationFormModal({
           &times;
         </button>
         <h2 className="text-xl font-semibold mb-4">Create Application</h2>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} noValidate>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">
               URL<span className="text-red-600"> *</span>
-              <input
-                type="text"
-                name="url"
-                value={appData.url}
-                id="url"
-                placeholder=" "
-                onChange={onChange}
-                className="w-full px-3 py-2 border rounded-md required:border-red-500 valid:border-green-500"
-                required
-              />
             </label>
+            <input
+              type="url"
+              name="url"
+              value={appData.url}
+              onChange={onChange}
+              className="w-full px-3 py-2 border rounded-md"
+              required
+            />
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">
@@ -63,7 +61,7 @@ export default function ApplicationFormModal({
               name="title"
               value={appData.title}
               onChange={onChange}
-              className="w-full px-3 py-2 border rounded-md required:border-red-500 valid:border-green-500"
+              className="w-full px-3 py-2 border rounded-md"
               required
             />
           </div>
@@ -75,8 +73,8 @@ export default function ApplicationFormModal({
               name="description"
               value={appData.description}
               onChange={onChange}
-              className="w-full px-3 py-2 border rounded-md "
-            ></textarea>
+              className="w-full px-3 py-2 border rounded-md"
+            />
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">Location</label>
@@ -99,16 +97,25 @@ export default function ApplicationFormModal({
             />
           </div>
           <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Salary</label>
+            <input
+              type="text"
+              name="salary"
+              value={appData.salary}
+              onChange={onChange}
+              className="w-full px-3 py-2 border rounded-md"
+            />
+          </div>
+          <div className="mb-4">
             <label className="block text-sm font-medium mb-1">Applied</label>
-            <div className="flex items-center">
-              <label className="mr-4">
+            <div className="flex items-center gap-4">
+              <label>
                 <input
                   type="radio"
                   name="applied"
-                  value="yes"
-                  checked={appData.applied === true}
+                  value="true"
+                  checked={appData.applied}
                   onChange={onChange}
-                  defaultValue={"yes"}
                 />
                 Yes
               </label>
@@ -116,8 +123,8 @@ export default function ApplicationFormModal({
                 <input
                   type="radio"
                   name="applied"
-                  value="no"
-                  checked={appData.applied === false}
+                  value="false"
+                  checked={!appData.applied}
                   onChange={onChange}
                 />
                 No
@@ -126,6 +133,7 @@ export default function ApplicationFormModal({
           </div>
           <div className="flex justify-end mt-4">
             <button
+              type="button"
               className="bg-gray-300 text-black px-4 py-2 rounded-md mr-2 hover:bg-gray-400"
               onClick={onClose}
             >
@@ -135,7 +143,7 @@ export default function ApplicationFormModal({
               type="submit"
               className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
             >
-              Create Application
+              Submit
             </button>
           </div>
         </form>

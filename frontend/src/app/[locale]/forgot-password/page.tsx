@@ -36,10 +36,9 @@ export default function Page() {
         setSuccessMessage(true);
         toast.success(t("resetPswdModalSuccessMessage"));
       }
-    } catch (error) {
+    } catch {
       setErrorMessage(true);
       toast.error(t("errorMessageResetPswd"));
-      console.log(error);
     }
   };
   return (
