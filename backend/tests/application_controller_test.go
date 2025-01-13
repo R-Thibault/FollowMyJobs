@@ -31,7 +31,7 @@ func TestApplication_ApplicationCreationSuccess(t *testing.T) {
 		Company:     "Example Ltd",
 		Location:    "Lyon",
 		Description: "Blabla",
-		Salary:      "30k",
+		Salary:      30000,
 		JobType:     "CDI",
 		Applied:     true,
 	}
@@ -68,7 +68,7 @@ func TestApplication_ApplicationCreationFail(t *testing.T) {
 		Company:     "Example Ltd",
 		Location:    "Lyon",
 		Description: "Blabla",
-		Salary:      "30k",
+		Salary:      30000,
 		JobType:     "CDI",
 		Applied:     true,
 	}
@@ -107,7 +107,7 @@ func TestApplication_ApplicationUpdateSuccess(t *testing.T) {
 		Company:     "Example Ltd",
 		Location:    "Lyon",
 		Description: "Blabla",
-		Salary:      "30k",
+		Salary:      30000,
 		JobType:     "CDI",
 		Applied:     true,
 	}
@@ -168,7 +168,7 @@ func TestApplication_ApplicationUpdateFail(t *testing.T) {
 		Company:     "Example Ltd",
 		Location:    "Lyon",
 		Description: "Blabla",
-		Salary:      "30k",
+		Salary:      30000,
 		JobType:     "CDI",
 		Applied:     true,
 	}
