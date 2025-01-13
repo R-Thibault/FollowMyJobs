@@ -1,0 +1,76 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Database",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["-f", "docker-compose.dev.yml", "up", "-d"],
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/docker",
+        "shell": {
+          "executable": "/bin/bash",
+          "args": ["-c"]
+        }
+      }
+    },
+
+    {
+      "label": "Start Frontend",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "dev"],
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/frontend",
+        "shell": {
+          "executable": "/bin/bash",
+          "args": ["-c"]
+        }
+      }
+    },
+    {
+      "label": "Start Backend",
+      "type": "shell",
+      "command": "air",
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/backend",
+        "shell": {
+          "executable": "/bin/bash",
+          "args": ["-c"]
+        }
+      },
+      "dependsOn": ["Start Database"]
+    },
+    {
+      "label": "Database Logs",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "docker container logs -f docker-db-1"],
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/docker",
+        "shell": {
+          "executable": "/bin/bash",
+          "args": ["-c"]
+        }
+      },
+      "dependsOn": ["Start Database"]
+    },
+    {
+      "label": "Start App Dev",
+      "dependsOn": [
+        "Start Database",
+        "Start Frontend",
+        "Start Backend",
+        "Database Logs"
+      ],
+      "dependsOrder": "parallel",
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    }
+  ]
+}
