@@ -27,13 +27,13 @@ func TestApplication_ApplicationCreationSuccess(t *testing.T) {
 
 	applicationDatas := models.Application{
 		Url:         "https://fr.indeed.com/?vjk=13d574920531c12a&from=smart-apply&advn=9955624168329073",
+		StatusID:    1,
 		Title:       "Développeur PHP H/F",
 		Company:     "Example Ltd",
 		Location:    "Lyon",
 		Description: "Blabla",
 		Salary:      30000,
 		JobType:     "CDI",
-		Applied:     true,
 	}
 
 	body, _ := json.Marshal(applicationDatas)
@@ -64,13 +64,13 @@ func TestApplication_ApplicationCreationFail(t *testing.T) {
 
 	applicationDatas := models.Application{
 		Url:         "https://fr.indeed.com/?vjk=13d574920531c12a&from=smart-apply&advn=9955624168329073",
+		StatusID:    1,
 		Title:       "Développeur PHP H/F",
 		Company:     "Example Ltd",
 		Location:    "Lyon",
 		Description: "Blabla",
 		Salary:      30000,
 		JobType:     "CDI",
-		Applied:     true,
 	}
 
 	body, _ := json.Marshal(applicationDatas)
@@ -103,13 +103,13 @@ func TestApplication_ApplicationUpdateSuccess(t *testing.T) {
 			ID: 1,
 		},
 		Url:         "https://fr.indeed.com/?vjk=13d574920531c12a&from=smart-apply&advn=9955624168329073",
+		StatusID:    1,
 		Title:       "Développeur PHP H/F",
 		Company:     "Example Ltd",
 		Location:    "Lyon",
 		Description: "Blabla",
 		Salary:      30000,
 		JobType:     "CDI",
-		Applied:     true,
 	}
 
 	body, _ := json.Marshal(applicationDatas)
@@ -125,14 +125,14 @@ func TestApplication_ApplicationUpdateSuccess(t *testing.T) {
 		Model: gorm.Model{
 			ID: 1,
 		},
-		Url:         applicationDatas.Url,
+		Url: applicationDatas.Url,
+
 		Title:       applicationDatas.Title,
 		Company:     applicationDatas.Company,
 		Location:    applicationDatas.Location,
 		Description: applicationDatas.Description,
 		Salary:      applicationDatas.Salary,
 		JobType:     applicationDatas.JobType,
-		Applied:     applicationDatas.Applied,
 	}
 	mockApplicationService.On("UpdateApplication", uint(1), applicationDatas).Return(updatedApplication, nil)
 
@@ -164,13 +164,13 @@ func TestApplication_ApplicationUpdateFail(t *testing.T) {
 			ID: 1,
 		},
 		Url:         "https://fr.indeed.com/?vjk=13d574920531c12a&from=smart-apply&advn=9955624168329073",
+		StatusID:    1,
 		Title:       "Développeur PHP H/F",
 		Company:     "Example Ltd",
 		Location:    "Lyon",
 		Description: "Blabla",
 		Salary:      30000,
 		JobType:     "CDI",
-		Applied:     true,
 	}
 
 	body, _ := json.Marshal(applicationDatas)
@@ -199,10 +199,8 @@ func TestApplication_ApplicationStatusUpdateSuccess(t *testing.T) {
 	c, _ := gin.CreateTestContext(w)
 
 	applicationStatus := models.ApplicationStatusRequest{
-		ID:       1,
-		Applied:  true,
-		Response: true,
-		FollowUp: false,
+		ID:          1,
+		NewStatusID: 2,
 	}
 
 	body, _ := json.Marshal(applicationStatus)
@@ -232,10 +230,8 @@ func TestApplication_ApplicationStatusUpdateFail(t *testing.T) {
 	c, _ := gin.CreateTestContext(w)
 
 	applicationStatus := models.ApplicationStatusRequest{
-		ID:       1,
-		Applied:  true,
-		Response: true,
-		FollowUp: false,
+		ID:          1,
+		NewStatusID: 2,
 	}
 
 	body, _ := json.Marshal(applicationStatus)
