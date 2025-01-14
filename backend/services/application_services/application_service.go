@@ -6,14 +6,18 @@ import (
 
 	"github.com/R-Thibault/FollowMyJobs/backend/models"
 	applicationrepository "github.com/R-Thibault/FollowMyJobs/backend/repository/application_repository"
+	statusrepository "github.com/R-Thibault/FollowMyJobs/backend/repository/status_repository"
 )
 
 type ApplicationService struct {
 	ApplicationRepo applicationrepository.ApplicationRepositoryInterface
+	StatusRepo      statusrepository.StatusRepositoryInterface
 }
 
-func NewApplicationService(ApplicationRepo applicationrepository.ApplicationRepositoryInterface) *ApplicationService {
-	return &ApplicationService{ApplicationRepo: ApplicationRepo}
+func NewApplicationService(
+	ApplicationRepo applicationrepository.ApplicationRepositoryInterface,
+	StatusRepo statusrepository.StatusRepositoryInterface) *ApplicationService {
+	return &ApplicationService{ApplicationRepo: ApplicationRepo, StatusRepo: StatusRepo}
 }
 
 func (s *ApplicationService) SaveApplication(userID uint, appData models.Application) error {
@@ -88,9 +92,11 @@ func (s *ApplicationService) UpdateApplicationStatus(userID uint, applicationDat
 	if application.UserID != userID {
 		return errors.New("Application not created by user")
 	}
-	application.Applied = applicationDatas.Applied
-	application.Response = applicationDatas.Response
-	application.FollowUp = applicationDatas.FollowUp
+	newStatus, err := s.StatusRepo.GetStatusByID(applicationDatas.NewStatusID)
+	if err != nil {
+		return errors.New("Can't find status")
+	}
+	application.StatusID = newStatus.ID
 	statusErr := s.ApplicationRepo.UpdateApplicationStatus(*application)
 	if statusErr != nil {
 		return errors.New("Error during status update")

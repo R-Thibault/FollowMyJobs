@@ -16,11 +16,18 @@ func main() {
 	config.InitDB()
 	defer config.CloseDB()
 
-	if err := config.SeedDatabaseWithUsers(config.GetDB()); err != nil {
-		log.Fatalf("Error loading initial data: %v", err)
-	}
-	if err := config.SeedDatabaseWithApplications(config.GetDB()); err != nil {
-		log.Fatalf("Error loading initial data: %v", err)
+	// Seed DB only in DEV mode
+	env := config.GetConfig("ENV")
+	if env == "DEV" {
+		if err := config.SeedDatabaseWithUsers(config.GetDB()); err != nil {
+			log.Fatalf("Error loading initial data: %v", err)
+		}
+		if err := config.SeedDatabaseWithStatus(config.GetDB()); err != nil {
+			log.Fatalf("Error loading initial data: %v", err)
+		}
+		if err := config.SeedDatabaseWithApplications(config.GetDB()); err != nil {
+			log.Fatalf("Error loading initial data: %v", err)
+		}
 	}
 	// Create a new Gin engine instance
 	r := gin.Default()

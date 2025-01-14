@@ -7,6 +7,7 @@ import "gorm.io/gorm"
 type Application struct {
 	gorm.Model
 	UserID      uint
+	StatusID    uint
 	Url         string `gorm:"not null"`
 	Title       string `gorm:"size:255; not null"`
 	Company     string `gorm:"size:255"`
@@ -14,14 +15,9 @@ type Application struct {
 	Description string
 	Salary      int
 	JobType     string `gorm:"size:255"`
-	Applied     bool   `gorm:"default:true"`
-	Response    bool   `gorm:"default:false"`
-	FollowUp    bool   `gorm:"default:false"`
 }
 
 type ApplicationStatusRequest struct {
-	ID       uint `json:"appID"`
-	Applied  bool `json:"applied"`
-	Response bool `json:"response"`
-	FollowUp bool `json:"followUp"`
+	ID          uint `json:"appID"`
+	NewStatusID uint `json:"newStatusID"`
 }

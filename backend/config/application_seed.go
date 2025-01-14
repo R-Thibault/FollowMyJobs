@@ -3,10 +3,10 @@ package config
 import (
 	"errors"
 	"log"
+	"math/rand/v2"
 
 	"github.com/R-Thibault/FollowMyJobs/backend/models"
 	"github.com/jaswdr/faker"
-	"golang.org/x/exp/rand"
 	"gorm.io/gorm"
 )
 
@@ -41,6 +41,7 @@ func SeedDatabaseWithApplications(db *gorm.DB) error {
 			for i := 0; i < numApplications; i++ {
 				application := models.Application{
 					UserID:      user.ID,
+					StatusID:    uint(rand.IntN(4) + 1),
 					Url:         fake.Internet().URL(),
 					Title:       fake.Company().JobTitle(),
 					Company:     fake.Company().Name(),
@@ -48,9 +49,6 @@ func SeedDatabaseWithApplications(db *gorm.DB) error {
 					Description: fake.Lorem().Sentence(10),      // 10 words as a short description
 					Salary:      fake.IntBetween(30000, 120000), // Random salary between 30k and 120k
 					JobType:     fake.Lorem().Word(),            // Random word as job type
-					Applied:     true,                           // Random boolean for applied
-					Response:    rand.Intn(2) == 1,              // Random boolean for response
-					FollowUp:    rand.Intn(2) == 1,              // Random boolean for follow-up
 				}
 
 				// Insert the application into the database
