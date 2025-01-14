@@ -151,7 +151,7 @@ func (app *ApplicationController) GetAllApplicationsByUserID(c *gin.Context) {
 	}
 
 	// Default sorting
-	sortBy := c.DefaultQuery("sortBy", "updated_at") // Default to updated_at
+	sortBy := c.DefaultQuery("sortBy", "updated_at")
 	if !allowedSortFields[sortBy] {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid sort field"})
 		return

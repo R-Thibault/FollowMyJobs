@@ -9,6 +9,7 @@ import (
 	tokenUtils "github.com/R-Thibault/FollowMyJobs/backend/internal/tokenGenerator_util"
 	applicationrepository "github.com/R-Thibault/FollowMyJobs/backend/repository/application_repository"
 	otpRepository "github.com/R-Thibault/FollowMyJobs/backend/repository/otp_repository"
+	statusrepository "github.com/R-Thibault/FollowMyJobs/backend/repository/status_repository"
 	userRepository "github.com/R-Thibault/FollowMyJobs/backend/repository/user_repository"
 	"github.com/R-Thibault/FollowMyJobs/backend/services"
 	applicationservices "github.com/R-Thibault/FollowMyJobs/backend/services/application_services"
@@ -34,6 +35,7 @@ func SetupRoutes(router *gin.Engine) {
 	UserRepository := userRepository.NewUserRepository(config.DB)
 	OTPRepository := otpRepository.NewOTPRepository(config.DB)
 	ApplicationRepository := applicationrepository.NewApplicationRepository(config.DB)
+	StatusRepository := statusrepository.NewStatusRepository(config.DB)
 
 	// Initialize Utilities
 	HashingService := hashingUtils.NewHashingService()
@@ -46,7 +48,7 @@ func SetupRoutes(router *gin.Engine) {
 	OTPService := otpServices.NewOTPService(UserRepository, OTPRepository, OTPGeneratorService)
 	MailerService := services.NewMailerService()
 	RegistrationService := registrationservices.NewRegistrationService(UserRepository, HashingService)
-	ApplicationService := applicationservices.NewApplicationService(ApplicationRepository)
+	ApplicationService := applicationservices.NewApplicationService(ApplicationRepository, StatusRepository)
 
 	// Initialize Controllers
 	AuthController := controllers.NewAuthController(UserService, HashingService, TokenService, GenerateTokenService)
