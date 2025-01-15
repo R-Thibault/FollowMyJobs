@@ -1,5 +1,6 @@
 "use client";
 
+import NavbarNoLogin from "@/components/organisms/NavbarNoLogin";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,20 +10,7 @@ export default function HomePage() {
   const locale = useLocale();
   return (
     <div className="grow min-h-screen bg-home-page bg-cover p-4 flex flex-col">
-      {/* Navbar */}
-      <nav className="flex gap-8 justify-center items-center mx-auto mb-8 sticky top-0 z-50 py-4 backdrop-blur-sm">
-        {/* Logo */}
-        <div className="text-lg font-bold">JobApp Manager</div>
-        {/* Burger Menu Placeholder */}
-        <div className="md:hidden">
-          <button className="text-2xl">&#9776;</button>
-        </div>
-        {/* Desktop Nav Links */}
-        <div className="hidden md:flex text-lg space-x-4 justify-center items-center">
-          <a href="#">{t("nav.getStarted")}</a>
-          <a href="#">{t("nav.contact")}</a>
-        </div>
-      </nav>
+      <NavbarNoLogin></NavbarNoLogin>
 
       {/* Main Content */}
       <div className="flex-1 flex md:flex-row flex-col items-center justify-center text-center">

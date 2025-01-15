@@ -70,14 +70,16 @@ func (r *ApplicationRepository) GetApplicationsByUserID(userID uint, requestSett
 	}
 
 	// Apply filters and pagination for the data query
-	query := r.db.Model(&models.Application{}).
+	query := r.db.Preload("Status").Model(&models.Application{}).
 		Where("user_id = ?", userID)
 
 	// Optional Title Filtering
 	if requestSettings.Title != nil {
 		query = query.Where("LOWER(title) LIKE ?", "%"+*requestSettings.Title+"%")
 	}
-
+	if len(requestSettings.Status) > 0 {
+		query = query.Where("status_id IN (?)", requestSettings.Status)
+	}
 	// Apply Sorting with basic validation
 	if requestSettings.SortBy != "" && requestSettings.SortOrder != "" {
 
