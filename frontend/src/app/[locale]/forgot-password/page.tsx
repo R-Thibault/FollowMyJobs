@@ -14,6 +14,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import axiosInstance from "@/lib/axiosInstance";
 import toast from "react-hot-toast";
+import LangageSelector from "@/components/molecules/LangageSelector";
+import NavbarNoLogin from "@/components/organisms/NavbarNoLogin";
 
 export default function Page() {
   const [emailResetPassword, setEmailResetPassword] = useState<string>("");
@@ -43,6 +45,7 @@ export default function Page() {
   };
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+      <NavbarNoLogin></NavbarNoLogin>
       <div className="w-full max-w-sm">
         <Card>
           {successMessage ? (

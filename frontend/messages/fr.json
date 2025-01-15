@@ -2,15 +2,15 @@
   "welcome": {
     "welcome": "Bonjour !"
   },
+  "navBar": {
+    "home": "Accueil",
+    "getStarted": "Commencer",
+    "contact": "Contact"
+  },
   "homePage": {
     "title": "Organisez vos candidatures sans effort",
     "description": "Restez au top de votre recherche d'emploi avec facilité et efficacité.",
-    "cta": "Commencez maintenant",
-    "nav": {
-      "home": "Accueil",
-      "getStarted": "Commencer",
-      "contact": "Contact"
-    }
+    "cta": "Commencez maintenant"
   },
   "loginPage": {
     "welcomeTitle": "Bienvenue sur FollowMyJobs!",

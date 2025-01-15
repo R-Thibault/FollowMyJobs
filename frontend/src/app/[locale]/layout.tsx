@@ -5,7 +5,7 @@ import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import LangageSelector from "@/components/molecules/LangageSelector";
+
 import { Toaster } from "react-hot-toast";
 
 export async function generateMetadata({
@@ -50,9 +50,6 @@ export default async function RootLayout({
       </head>
       <body className="relative mx-auto min-h-screen">
         <NextIntlClientProvider messages={messages}>
-          <div className="fixed right-6 top-6 z-50">
-            <LangageSelector />
-          </div>
           <Toaster position="bottom-right" />
           {children}
         </NextIntlClientProvider>

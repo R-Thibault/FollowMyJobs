@@ -14,6 +14,8 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import axiosInstance from "@/lib/axiosInstance";
 import toast from "react-hot-toast";
+import LangageSelector from "@/components/molecules/LangageSelector";
+import NavbarNoLogin from "@/components/organisms/NavbarNoLogin";
 
 export default function Page() {
   const [emailResetPassword, setEmailResetPassword] = useState<string>("");
@@ -100,6 +102,9 @@ export default function Page() {
   if (isTokenValid === null) {
     return (
       <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+        <div className="fixed right-6 top-8 z-50">
+          <LangageSelector />
+        </div>
         <div className="w-full max-w-sm">
           <p className="text-center">{t("tokenVerificationWait")}</p>
         </div>
@@ -108,6 +113,9 @@ export default function Page() {
   } else if (isTokenValid === false) {
     return (
       <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+        <div className="fixed right-6 top-8 z-50">
+          <LangageSelector />
+        </div>
         <div className="w-full max-w-sm">
           <p className="text-red-500 text-center">{t("tokenErrorMessage")}</p>
         </div>
@@ -116,6 +124,7 @@ export default function Page() {
   } else {
     return (
       <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+        <NavbarNoLogin></NavbarNoLogin>
         <div className="w-full max-w-sm">
           <Card>
             {successMessage ? (
