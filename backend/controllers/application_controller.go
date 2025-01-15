@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/R-Thibault/FollowMyJobs/backend/models"
 	applicationservices "github.com/R-Thibault/FollowMyJobs/backend/services/application_services"
@@ -142,6 +143,7 @@ func (app *ApplicationController) GetAllApplicationsByUserID(c *gin.Context) {
 
 	// Sorting logic with validation
 	allowedSortFields := map[string]bool{
+		"statusID":   true,
 		"created_at": true,
 		"location":   true,
 		"title":      true,
@@ -168,7 +170,10 @@ func (app *ApplicationController) GetAllApplicationsByUserID(c *gin.Context) {
 	if title != "" {
 		requestSettings.Title = &title
 	}
-
+	statusFilter := c.Query("statusFilter")
+	if statusFilter != "" {
+		requestSettings.Status = strings.Split(statusFilter, ",")
+	}
 	// Retrieve userUUID from Gin context
 	userUUID, exists := c.Get("userUUID")
 	if !exists {
@@ -212,6 +217,7 @@ func (app *ApplicationController) GetAllApplicationsByUserID(c *gin.Context) {
 			"sortBy":    requestSettings.SortBy,
 			"sortOrder": requestSettings.SortOrder,
 		},
+		"status": requestSettings.Status,
 	}
 
 	c.JSON(http.StatusOK, response)

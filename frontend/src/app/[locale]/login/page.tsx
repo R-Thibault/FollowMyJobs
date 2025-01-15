@@ -3,12 +3,16 @@
 import React from "react";
 import { LoginForm } from "@/components/organisms/login-form";
 import { useTranslations } from "next-intl";
+import LangageSelector from "@/components/molecules/LangageSelector";
 
 export default function Login() {
   const t = useTranslations("loginPage");
 
   return (
     <div className="flex min-h-svh w-full">
+      <div className="fixed right-6 top-6 z-50">
+        <LangageSelector />
+      </div>
       {/* Section gauche - Texte de présentation */}
       <div className="hidden md:flex w-1/2 items-center justify-center bg-gray-100 p-10 text-gray-700">
         <div className="text-center space-y-6 max-w-md">

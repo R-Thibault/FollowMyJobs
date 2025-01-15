@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { StatusType } from "@/types/statusType";
 
 export const columns = ({
   onSortChange,
@@ -46,8 +47,21 @@ export const columns = ({
     enableHiding: false,
   },
   {
+    accessorKey: "Status",
+    header: "Status",
+    cell: ({ row }) => {
+      const status = row.getValue("Status") as StatusType;
+
+      return (
+        <span className="flex items-center hover:underline">
+          {status.Status}
+        </span>
+      );
+    },
+  },
+  {
     accessorKey: "Url",
-    header: ({ column }) => (
+    header: () => (
       <Button
         variant="ghost"
         onClick={() =>
@@ -85,7 +99,7 @@ export const columns = ({
   },
   {
     accessorKey: "Location",
-    header: ({ column }) => (
+    header: () => (
       <Button
         variant="ghost"
         onClick={() =>
@@ -108,7 +122,7 @@ export const columns = ({
   },
   {
     accessorKey: "Title",
-    header: ({ column }) => (
+    header: () => (
       <Button
         variant="ghost"
         onClick={() =>
@@ -131,7 +145,7 @@ export const columns = ({
   },
   {
     accessorKey: "Salary",
-    header: ({ column }) => (
+    header: () => (
       <Button
         variant="ghost"
         onClick={() =>
@@ -165,7 +179,7 @@ export const columns = ({
   },
   {
     accessorKey: "UpdatedAt",
-    header: ({ column }) => (
+    header: () => (
       <Button
         variant="ghost"
         onClick={() =>
@@ -185,11 +199,23 @@ export const columns = ({
       </Button>
     ),
     enableSorting: true,
+    cell: ({ row }) => {
+      const date = row.getValue("UpdatedAt") as string;
+      return (
+        <div className="text-center font-medium">
+          {new Date(date).toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          })}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "Actions",
     enableHiding: false,
-    cell: ({ row }) => (
+    cell: () => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">

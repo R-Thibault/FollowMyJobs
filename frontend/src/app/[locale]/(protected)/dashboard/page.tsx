@@ -1,13 +1,12 @@
 "use client";
-import { SetStateAction, useEffect, useState } from "react";
-import ApplicationDisplay from "@/components/organisms/applicationsDisplay";
-import { ApplicationType } from "@/types/applicationType";
+import { useEffect, useState } from "react";
 import ApplicationFormModal from "@/components/organisms/applicationFormModal";
 import axiosInstance from "@/lib/axiosInstance";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { title } from "process";
+import Navbar from "@/components/organisms/Navbar";
+import { DataTable } from "@/components/organisms/data-table";
+import { columns } from "@/components/organisms/columns";
 
 export default function Dashboard() {
   const [showAppModal, setShowAppModal] = useState<boolean>(false);
@@ -21,7 +20,7 @@ export default function Dashboard() {
     applied: true,
   });
 
-  const [applications, setApplications] = useState<ApplicationType[]>([]);
+  const [applications, setApplications] = useState([]);
   const [pagination, setPagination] = useState({
     current_page: 1,
     page_size: 10,
@@ -31,6 +30,13 @@ export default function Dashboard() {
   const [titleSearch, setTitleSearch] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("updated_at");
   const [sortOrder, setSortOrder] = useState<string>("desc");
+  const [statusFilter, setStatusFilterParam] = useState<string[]>([
+    "1",
+    "2",
+    "3",
+    "4",
+  ]);
+
   const handleAppChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -63,7 +69,8 @@ export default function Dashboard() {
     pageSize = 10,
     sortByParam = sortBy,
     sortOrderParam = sortOrder,
-    titleSearchParam = titleSearch
+    titleSearchParam = titleSearch,
+    statusFilterParam = statusFilter
   ) => {
     try {
       const response = await axiosInstance.get("/applications-by-user", {
@@ -71,6 +78,7 @@ export default function Dashboard() {
           limit: pageSize,
           offset: (page - 1) * pageSize,
           titleSearch: titleSearchParam.toLowerCase(),
+          statusFilter: statusFilterParam.join(","),
           sortBy: sortByParam.toLowerCase(),
           sortOrder: sortOrderParam,
         },
@@ -84,6 +92,7 @@ export default function Dashboard() {
           total_pages: response.data.pagination.total_pages,
           total_items: response.data.pagination.total_items,
         });
+        setStatusFilterParam(response.data.status);
       }
     } catch (error) {
       console.error("Error fetching applications", error);
@@ -95,21 +104,46 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      {/* Main Content Area */}
-      <div className="flex-1 p-6">
-        <Card>
-          <CardHeader className="flex justify-between items-center">
+    <div className="grow min-h-screen p-4 flex flex-col">
+      <Navbar />
+      <div className="flex md:flex-col p-6 mt-14">
+        <div>
+          <div className="flex gap-10 items-center">
             <h1 className="text-2xl font-semibold">Dashboard</h1>
             <Button onClick={() => setShowAppModal(true)}>
               Create Application
             </Button>
-          </CardHeader>
-          <CardContent>
-            <ApplicationDisplay
-              applications={applications}
+          </div>
+          <div className="flex md:flex-col items-center justify-center">
+            <DataTable
+              columns={columns({
+                onSortChange: (sortBy, sortOrder) => {
+                  setSortBy(sortBy);
+                  setSortOrder(sortOrder);
+                  fetchApplications(
+                    1,
+                    pagination.page_size,
+                    sortBy,
+                    sortOrder,
+                    titleSearch,
+                    statusFilter
+                  );
+                },
+                currentSortBy: sortBy,
+                currentSortOrder: sortOrder,
+              })}
+              data={applications}
               pagination={pagination}
-              onPageChange={fetchApplications}
+              onPageChange={(page, pageSize) =>
+                fetchApplications(
+                  page,
+                  pageSize,
+                  sortBy,
+                  sortOrder,
+                  titleSearch,
+                  statusFilter
+                )
+              }
               onSortChange={(sortBy, sortOrder) => {
                 setSortBy(sortBy);
                 setSortOrder(sortOrder);
@@ -118,7 +152,8 @@ export default function Dashboard() {
                   pagination.page_size,
                   sortBy,
                   sortOrder,
-                  titleSearch
+                  titleSearch,
+                  statusFilter
                 );
               }}
               currentSortBy={sortBy}
@@ -130,16 +165,27 @@ export default function Dashboard() {
                   pagination.page_size,
                   sortBy,
                   sortOrder,
-                  titleSearchParam
+                  titleSearchParam,
+                  statusFilter
                 );
               }}
               titleSearchParam={titleSearch}
+              statusFilterParam={statusFilter}
+              onStatusFilterChange={(statusFilter) => {
+                setStatusFilterParam(statusFilter);
+                fetchApplications(
+                  1,
+                  pagination.page_size,
+                  sortBy,
+                  sortOrder,
+                  titleSearch,
+                  statusFilter
+                );
+              }}
             />
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
-
-      {/* Modal for creating an application */}
       <ApplicationFormModal
         showModal={showAppModal}
         onClose={() => setShowAppModal(false)}

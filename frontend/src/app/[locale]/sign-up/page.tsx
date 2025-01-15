@@ -14,6 +14,7 @@ import { useTranslations } from "next-intl";
 
 import React, { useState } from "react";
 import DialogOTP from "@/components/organisms/DialogOTP";
+import LangageSelector from "@/components/molecules/LangageSelector";
 
 export default function Page() {
   const t = useTranslations("signUpPage");
@@ -89,6 +90,9 @@ export default function Page() {
 
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+      <div className="fixed right-6 top-8 z-50">
+        <LangageSelector />
+      </div>
       <div className="w-full max-w-sm">
         <Card>
           <CardHeader>

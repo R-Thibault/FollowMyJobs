@@ -1,5 +1,5 @@
 // app/[locale]/dashboard/layout.tsx
-import Navbar from "@/components/organisms/Navbar";
+
 import axiosInstance from "@/lib/axiosInstance";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -38,10 +38,5 @@ export default async function DashboardLayout({
     redirect(`/${params.locale}/login`);
   }
 
-  return (
-    <div>
-      <Navbar />
-      <main>{children}</main>
-    </div>
-  );
+  return <main className="relative mx-auto min-h-screen">{children}</main>;
 }

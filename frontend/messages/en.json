@@ -2,15 +2,15 @@
   "welcome": {
     "welcome": "Hello there !"
   },
+  "navBar": {
+    "home": "Home",
+    "getStarted": "Get Started",
+    "contact": "Contact"
+  },
   "homePage": {
     "title": "Organize Your Job Applications Effortlessly",
     "description": "Stay on top of your job search with ease and efficiency.",
-    "cta": "Get Started Now",
-    "nav": {
-      "home": "Home",
-      "getStarted": "Get Started",
-      "contact": "Contact"
-    }
+    "cta": "Get Started Now"
   },
   "loginPage": {
     "welcomeTitle": "Welcome to FollowMyJobs!",
