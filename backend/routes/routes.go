@@ -80,5 +80,5 @@ func SetupRoutes(router *gin.Engine) {
 	protected.GET("/applications-by-user", ApplicationController.GetAllApplicationsByUserID)
 	protected.POST("/update-application", ApplicationController.UpdateApplication)
 	protected.POST("/delete-application", ApplicationController.DeleteApplication) //Soft delete with Gorm
-	protected.POST("/application-status-update", ApplicationController.UpdateApplicationStatus)
+	protected.POST("/application/:applicationID/status", ApplicationController.UpdateApplicationStatus)
 }
