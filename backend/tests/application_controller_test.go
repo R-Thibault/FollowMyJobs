@@ -199,8 +199,8 @@ func TestApplication_ApplicationStatusUpdateSuccess(t *testing.T) {
 	c, _ := gin.CreateTestContext(w)
 
 	applicationStatus := models.ApplicationStatusRequest{
-		ID:          1,
-		NewStatusID: 2,
+		ApplicationID: 1,
+		StatusID:      2,
 	}
 
 	body, _ := json.Marshal(applicationStatus)
@@ -230,8 +230,8 @@ func TestApplication_ApplicationStatusUpdateFail(t *testing.T) {
 	c, _ := gin.CreateTestContext(w)
 
 	applicationStatus := models.ApplicationStatusRequest{
-		ID:          1,
-		NewStatusID: 2,
+		ApplicationID: 1,
+		StatusID:      2,
 	}
 
 	body, _ := json.Marshal(applicationStatus)

@@ -14,15 +14,24 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { StatusType } from "@/types/statusType";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export const columns = ({
   onSortChange,
   currentSortBy,
   currentSortOrder,
+  setSelectedStatus,
 }: {
   onSortChange: (sortBy: string, sortOrder: string) => void;
   currentSortBy: string;
   currentSortOrder: string;
+  setSelectedStatus: (status: string, applicationID: string) => void;
 }): ColumnDef<ApplicationType>[] => [
   {
     id: "select",
@@ -51,11 +60,26 @@ export const columns = ({
     header: "Status",
     cell: ({ row }) => {
       const status = row.getValue("Status") as StatusType;
+      const applicationID = row.original.ID;
 
       return (
-        <span className="flex items-center hover:underline">
-          {status.Status}
-        </span>
+        <Select
+          onValueChange={(value) => {
+            (row.getValue("Status") as StatusType).Status = value;
+            setSelectedStatus(value, applicationID);
+          }}
+          defaultValue={status.ID.toString()}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder={status.Status} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="1">Applied</SelectItem>
+            <SelectItem value="2">FollowedUp</SelectItem>
+            <SelectItem value="3">Rejected</SelectItem>
+            <SelectItem value="4">Closed</SelectItem>
+          </SelectContent>
+        </Select>
       );
     },
   },
