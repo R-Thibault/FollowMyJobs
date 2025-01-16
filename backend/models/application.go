@@ -19,6 +19,6 @@ type Application struct {
 }
 
 type ApplicationStatusRequest struct {
-	ID          uint `json:"appID"`
-	NewStatusID uint `json:"newStatusID"`
+	ApplicationID uint `json:"applicationID"`
+	StatusID      uint `json:"statusID"`
 }

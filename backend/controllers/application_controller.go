@@ -257,6 +257,7 @@ func (app *ApplicationController) DeleteApplication(c *gin.Context) {
 func (app *ApplicationController) UpdateApplicationStatus(c *gin.Context) {
 	var appStatus models.ApplicationStatusRequest
 	if err := c.ShouldBindJSON(&appStatus); err != nil {
+		log.Printf("Controller error : %v", appStatus)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request data"})
 		return
 	}

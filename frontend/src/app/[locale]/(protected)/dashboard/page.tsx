@@ -86,6 +86,7 @@ export default function Dashboard() {
       });
       if (response.status === 200) {
         setApplications(response.data.datas);
+
         setPagination({
           current_page: page,
           page_size: pageSize,
@@ -98,10 +99,38 @@ export default function Dashboard() {
       console.error("Error fetching applications", error);
     }
   };
-
   useEffect(() => {
     fetchApplications();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleUpdateStatus = async (
+    statusID: string,
+    applicationID: string
+  ) => {
+    console.log(statusID);
+    console.log(applicationID);
+    try {
+      const response = await axiosInstance.post(
+        `/application/${applicationID}/status`,
+        { applicationID: Number(applicationID), statusID: Number(statusID) },
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        fetchApplications(
+          pagination.current_page,
+          pagination.page_size,
+          sortBy,
+          sortOrder,
+          titleSearch,
+          statusFilter
+        );
+        toast.success("Status updated successfully!");
+      }
+    } catch {
+      toast.error("Failed to update status");
+    }
+  };
 
   return (
     <div className="grow min-h-screen p-4 flex flex-col">
@@ -128,6 +157,9 @@ export default function Dashboard() {
                     titleSearch,
                     statusFilter
                   );
+                },
+                setSelectedStatus(status, applicationID) {
+                  handleUpdateStatus(status, applicationID);
                 },
                 currentSortBy: sortBy,
                 currentSortOrder: sortOrder,
@@ -156,7 +188,6 @@ export default function Dashboard() {
                   statusFilter
                 );
               }}
-              currentSortBy={sortBy}
               currentSortOrder={sortOrder}
               onSearchTitle={(titleSearchParam) => {
                 setTitleSearch(titleSearchParam);
@@ -181,6 +212,9 @@ export default function Dashboard() {
                   titleSearch,
                   statusFilter
                 );
+              }}
+              setSelectedStatus={(status, applicationID) => {
+                handleUpdateStatus(status, applicationID);
               }}
             />
           </div>

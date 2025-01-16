@@ -39,6 +39,7 @@ interface DataTableProps<TData, TValue> {
     | ColumnDef<TData, TValue>[]
     | ((props: {
         onSortChange: (sortBy: string, sortOrder: string) => void;
+        setSelectedStatus: (status: string, applicationID: string) => void;
       }) => ColumnDef<TData, TValue>[]);
   data: TData[];
   pagination: {
@@ -49,12 +50,12 @@ interface DataTableProps<TData, TValue> {
   };
   onPageChange: (page: number, pageSize: number) => void;
   onSortChange: (sortBy: string, sortOrder: string) => void;
-  currentSortBy: string;
   currentSortOrder: string;
   onSearchTitle: (titleSearchParam: string) => void;
   titleSearchParam: string;
   statusFilterParam: string[];
   onStatusFilterChange: (statusFilterParam: string[]) => void;
+  setSelectedStatus: (status: string, applicationID: string) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -63,12 +64,11 @@ export function DataTable<TData, TValue>({
   pagination,
   onPageChange,
   onSortChange,
-  currentSortBy,
-  currentSortOrder,
   onSearchTitle,
   titleSearchParam,
   statusFilterParam,
   onStatusFilterChange,
+  setSelectedStatus,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -79,7 +79,7 @@ export function DataTable<TData, TValue>({
 
   const columnDefs = Array.isArray(columns)
     ? columns
-    : columns({ onSortChange });
+    : columns({ onSortChange, setSelectedStatus });
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
@@ -101,7 +101,7 @@ export function DataTable<TData, TValue>({
       rowSelection,
     },
   });
-  console.log("status filter", statusFilterParam);
+
   return (
     <div className="flex flex-col lg:flex-row">
       <div className="flex flex-col  w-full lg:w-1/4 p-4">
@@ -208,19 +208,10 @@ export function DataTable<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead key={header.id}>
-                    <button
-                      onClick={() =>
-                        onSortChange(
-                          header.column.id,
-                          currentSortOrder === "asc" ? "desc" : "asc"
-                        )
-                      }
-                    >
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                    </button>
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
                   </TableHead>
                 ))}
               </TableRow>
