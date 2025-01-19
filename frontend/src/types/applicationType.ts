@@ -1,7 +1,7 @@
 import { StatusType } from "./statusType";
 
 export type ApplicationType = {
-  ID: string;
+  ID: number;
   Status: StatusType;
   Title: string;
   Url?: string;

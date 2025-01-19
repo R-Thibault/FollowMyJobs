@@ -5,7 +5,9 @@
   "navBar": {
     "home": "Home",
     "getStarted": "Get Started",
-    "contact": "Contact"
+    "contact": "Contact",
+    "dashboard": "Dashboard",
+    "myProfile": "My profile"
   },
   "homePage": {
     "title": "Organize Your Job Applications Effortlessly",

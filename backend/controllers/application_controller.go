@@ -58,7 +58,7 @@ func (app *ApplicationController) SaveApplication(c *gin.Context) {
 func (app *ApplicationController) UpdateApplication(c *gin.Context) {
 	var appData models.Application
 	if err := c.ShouldBindJSON(&appData); err != nil {
-		// If the input is invalid, respond with an error
+
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request data"})
 		return
 	}

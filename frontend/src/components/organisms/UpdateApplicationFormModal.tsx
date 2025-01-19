@@ -1,25 +1,28 @@
 "use client";
+import { ApplicationType } from "@/types/applicationType";
 import React from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ApplicationModalProps {
   showModal: boolean;
   onClose: () => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  appData: {
-    url: string;
-    title: string;
-    description: string;
-    location: string;
-    company: string;
-    salary: string;
-    applied: boolean;
-  };
+  appData: ApplicationType;
   onChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      | { name: string; value: any }
   ) => void;
 }
 
-export default function ApplicationFormModal({
+export default function UpdateApplicationFormModal({
   showModal,
   onClose,
   onSubmit,
@@ -37,7 +40,7 @@ export default function ApplicationFormModal({
         >
           &times;
         </button>
-        <h2 className="text-xl font-semibold mb-4">Create Application</h2>
+        <h2 className="text-xl font-semibold mb-4">Update Application</h2>
         <form onSubmit={onSubmit} noValidate>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">
@@ -45,8 +48,8 @@ export default function ApplicationFormModal({
             </label>
             <input
               type="url"
-              name="url"
-              value={appData.url}
+              name="Url"
+              value={appData.Url}
               onChange={onChange}
               className="w-full px-3 py-2 border rounded-md"
               required
@@ -58,8 +61,8 @@ export default function ApplicationFormModal({
             </label>
             <input
               type="text"
-              name="title"
-              value={appData.title}
+              name="Title"
+              value={appData.Title}
               onChange={onChange}
               className="w-full px-3 py-2 border rounded-md"
               required
@@ -70,8 +73,8 @@ export default function ApplicationFormModal({
               Description
             </label>
             <textarea
-              name="description"
-              value={appData.description}
+              name="Description"
+              value={appData.Description}
               onChange={onChange}
               className="w-full px-3 py-2 border rounded-md"
             />
@@ -80,8 +83,8 @@ export default function ApplicationFormModal({
             <label className="block text-sm font-medium mb-1">Location</label>
             <input
               type="text"
-              name="location"
-              value={appData.location}
+              name="Location"
+              value={appData.Location}
               onChange={onChange}
               className="w-full px-3 py-2 border rounded-md"
             />
@@ -90,8 +93,8 @@ export default function ApplicationFormModal({
             <label className="block text-sm font-medium mb-1">Company</label>
             <input
               type="text"
-              name="company"
-              value={appData.company}
+              name="Company"
+              value={appData.Company}
               onChange={onChange}
               className="w-full px-3 py-2 border rounded-md"
             />
@@ -99,9 +102,9 @@ export default function ApplicationFormModal({
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">Salary</label>
             <input
-              type="text"
-              name="salary"
-              value={appData.salary}
+              type="number"
+              name="Salary"
+              value={appData.Salary}
               onChange={onChange}
               className="w-full px-3 py-2 border rounded-md"
             />
@@ -109,26 +112,35 @@ export default function ApplicationFormModal({
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">Applied</label>
             <div className="flex items-center gap-4">
-              <label>
-                <input
-                  type="radio"
-                  name="applied"
-                  value="true"
-                  checked={appData.applied}
-                  onChange={onChange}
-                />
-                Yes
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="applied"
-                  value="false"
-                  checked={!appData.applied}
-                  onChange={onChange}
-                />
-                No
-              </label>
+              <Select
+                onValueChange={(value) =>
+                  onChange({
+                    name: "Status",
+                    value: {
+                      ID: Number(value),
+                      Status:
+                        value === "1"
+                          ? "Applied"
+                          : value === "2"
+                          ? "FollowedUp"
+                          : value === "3"
+                          ? "Rejected"
+                          : "Closed",
+                    },
+                  })
+                }
+                defaultValue={appData.Status.ID.toString()}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={appData.Status.Status} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">Applied</SelectItem>
+                  <SelectItem value="2">FollowedUp</SelectItem>
+                  <SelectItem value="3">Rejected</SelectItem>
+                  <SelectItem value="4">Closed</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <div className="flex justify-end mt-4">

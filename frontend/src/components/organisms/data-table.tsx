@@ -22,17 +22,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ChevronDown } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { ApplicationType } from "@/types/applicationType";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns:
@@ -40,7 +34,9 @@ interface DataTableProps<TData, TValue> {
     | ((props: {
         onSortChange: (sortBy: string, sortOrder: string) => void;
         setSelectedStatus: (status: string, applicationID: string) => void;
+        setUpdateApplicationModal: (applicationDatas: ApplicationType) => void;
       }) => ColumnDef<TData, TValue>[]);
+
   data: TData[];
   pagination: {
     current_page: number;
@@ -56,6 +52,7 @@ interface DataTableProps<TData, TValue> {
   statusFilterParam: string[];
   onStatusFilterChange: (statusFilterParam: string[]) => void;
   setSelectedStatus: (status: string, applicationID: string) => void;
+  setUpdateApplicationModal: (applicationDatas: ApplicationType) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -69,6 +66,7 @@ export function DataTable<TData, TValue>({
   statusFilterParam,
   onStatusFilterChange,
   setSelectedStatus,
+  setUpdateApplicationModal,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -76,13 +74,16 @@ export function DataTable<TData, TValue>({
   );
   const [searchValue, setSearchValue] =
     React.useState<string>(titleSearchParam);
+  const [filtersOpen, setFiltersOpen] = React.useState<boolean>(false); // Mobile filter toggle
 
   const columnDefs = Array.isArray(columns)
     ? columns
-    : columns({ onSortChange, setSelectedStatus });
+    : columns({ onSortChange, setSelectedStatus, setUpdateApplicationModal });
+
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+
   const table = useReactTable({
     data,
     columns: columnDefs,
@@ -103,147 +104,114 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="flex flex-col lg:flex-row">
-      <div className="flex flex-col  w-full lg:w-1/4 p-4">
+    <div className="flex flex-col w-full p-4">
+      {/* Search & Filter Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
         <Input
-          placeholder="Filter title..."
+          placeholder="Search title..."
           value={searchValue}
           onChange={(event) => {
             setSearchValue(event.target.value);
             onSearchTitle(event.target.value);
           }}
-          className="mb-4"
+          className="w-full sm:w-1/2"
         />
 
-        <label className="text-sm font-medium">Filter by status:</label>
-        <div className="flex flex-row lg:flex-col gap-2">
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="Applied"
-              checked={statusFilterParam.includes("1")}
-              onCheckedChange={(checked) =>
-                onStatusFilterChange(
-                  checked
-                    ? [...statusFilterParam, "1"]
-                    : statusFilterParam.filter((val) => val !== "1")
-                )
-              }
-            />
-            <label htmlFor="Applied">Applied</label>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="FollowedUp"
-              checked={statusFilterParam.includes("2")}
-              onCheckedChange={(checked) =>
-                onStatusFilterChange(
-                  checked
-                    ? [...statusFilterParam, "2"]
-                    : statusFilterParam.filter((val) => val !== "2")
-                )
-              }
-            />
-            <label htmlFor="FollowedUp">Followed Up</label>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id={"Rejected"}
-              checked={statusFilterParam.includes("3")}
-              onCheckedChange={(checked) =>
-                onStatusFilterChange(
-                  checked
-                    ? [...statusFilterParam, "3"]
-                    : statusFilterParam.filter((val) => val !== "3")
-                )
-              }
-            />
-            <label htmlFor="Rejected">Rejected</label>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="Closed"
-              checked={statusFilterParam.includes("4")}
-              onCheckedChange={(checked) =>
-                onStatusFilterChange(
-                  checked
-                    ? [...statusFilterParam, "4"]
-                    : statusFilterParam.filter((val) => val !== "4")
-                )
-              }
-            />
-            <label htmlFor="Closed">Closed</label>
-          </div>
-        </div>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="mt-4">
-              Columns <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => (
-                <DropdownMenuCheckboxItem
-                  key={column.id}
-                  checked={column.getIsVisible()}
-                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                >
-                  {column.id}
-                </DropdownMenuCheckboxItem>
-              ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Button
+          onClick={() => setFiltersOpen(!filtersOpen)}
+          className="mt-2 sm:mt-0 sm:ml-4 flex items-center"
+          variant="outline"
+        >
+          Filters{" "}
+          {filtersOpen ? (
+            <ChevronUp className="ml-2" />
+          ) : (
+            <ChevronDown className="ml-2" />
+          )}
+        </Button>
       </div>
 
-      <div className="flex-1 p-4">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                  </TableHead>
-                ))}
-              </TableRow>
+      {/* Smooth Dropdown Filter Section */}
+      {filtersOpen && (
+        <div className="bg-gray-100 rounded-lg p-4 mb-4 shadow-sm transition-all">
+          <label className="text-sm font-medium mb-2 block">
+            Filter by Status:
+          </label>
+          <div className="flex flex-wrap gap-3">
+            {[
+              { id: "1", label: "Applied" },
+              { id: "2", label: "Followed Up" },
+              { id: "3", label: "Rejected" },
+              { id: "4", label: "Closed" },
+            ].map(({ id, label }) => (
+              <div key={id} className="flex items-center gap-2">
+                <Checkbox
+                  id={id}
+                  checked={statusFilterParam.includes(id)}
+                  onCheckedChange={(checked) =>
+                    onStatusFilterChange(
+                      checked
+                        ? [...statusFilterParam, id]
+                        : statusFilterParam.filter((val) => val !== id)
+                    )
+                  }
+                />
+                <label htmlFor={id} className="text-sm">
+                  {label}
+                </label>
+              </div>
             ))}
-          </TableHeader>
+          </div>
+        </div>
+      )}
 
-          <TableBody>
-            {table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+      {/* Table Section */}
+      <div className="flex-auto p-4 overflow-x-auto">
+        <div className="w-full overflow-x-auto rounded-lg border border-gray-200">
+          <Table className="min-w-full">
+            <TableHeader className="bg-gray-100">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id} className="px-3 py-2 text-left">
                       {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
+                        header.column.columnDef.header,
+                        header.getContext()
                       )}
-                    </TableCell>
+                    </TableHead>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="text-center">
-                  No results found.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-        <div className="flex items-center justify-between mt-4">
+              ))}
+            </TableHeader>
+
+            <TableBody>
+              {table.getRowModel().rows.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="px-3 py-2">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={columns.length} className="text-center">
+                    No results found.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+
+        {/* Pagination Buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-4">
           <Button
-            className="m-2"
             variant="outline"
             onClick={() =>
               onPageChange(pagination.current_page - 1, pagination.page_size)
@@ -252,11 +220,10 @@ export function DataTable<TData, TValue>({
           >
             Previous
           </Button>
-          <p>
+          <p className="my-2 sm:my-0">
             Page {pagination.current_page} of {pagination.total_pages}
           </p>
           <Button
-            className="m-2"
             variant="outline"
             onClick={() =>
               onPageChange(pagination.current_page + 1, pagination.page_size)

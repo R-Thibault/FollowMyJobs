@@ -1,23 +1,43 @@
 "use client";
 import { useEffect, useState } from "react";
-import ApplicationFormModal from "@/components/organisms/applicationFormModal";
 import axiosInstance from "@/lib/axiosInstance";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/organisms/Navbar";
 import { DataTable } from "@/components/organisms/data-table";
 import { columns } from "@/components/organisms/columns";
+import { ApplicationType } from "@/types/applicationType";
+import CreateApplicationFormModal from "@/components/organisms/CreateApplicationFormModal";
+import UpdateApplicationFormModal from "@/components/organisms/UpdateApplicationFormModal";
 
 export default function Dashboard() {
-  const [showAppModal, setShowAppModal] = useState<boolean>(false);
-  const [appData, setAppData] = useState({
-    url: "",
-    title: "",
-    description: "",
-    location: "",
-    company: "",
-    salary: "",
-    applied: true,
+  const [showAppCreateModal, setShowAppCreateModal] = useState<boolean>(false);
+  const [showAppUpdateModal, setShowAppUpdateModal] = useState<boolean>(false);
+  const [appData, setAppData] = useState<ApplicationType>({
+    ID: 0,
+    Url: "",
+    Title: "",
+    Description: "",
+    Location: "",
+    Company: "",
+    Salary: 0,
+    Status: {
+      ID: 1,
+      Status: "Applied",
+    },
+  });
+  const [appUpdateData, setAppUpdateData] = useState<ApplicationType>({
+    ID: 0,
+    Url: "",
+    Title: "",
+    Description: "",
+    Location: "",
+    Company: "",
+    Salary: 0,
+    Status: {
+      ID: 1,
+      Status: "Applied",
+    },
   });
 
   const [applications, setApplications] = useState([]);
@@ -37,17 +57,49 @@ export default function Dashboard() {
     "4",
   ]);
 
-  const handleAppChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  const handleCreateAppChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      | { name: string; value: any }
   ) => {
-    const { name, value } = e.target;
-    setAppData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    if ("target" in e) {
+      const { name, value } = e.target;
+      setAppData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    } else {
+      // Handling select dropdown change
+      setAppData((prevData) => ({
+        ...prevData,
+        [e.name]: e.value,
+      }));
+    }
   };
 
-  const handleAppSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleUpdateAppChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      | { name: string; value: any }
+  ) => {
+    if ("target" in e) {
+      const { name, value } = e.target;
+      setAppUpdateData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    } else {
+      // Handling select dropdown change
+      setAppUpdateData((prevData) => ({
+        ...prevData,
+        [e.name]: e.value,
+      }));
+    }
+  };
+
+  const handleCreateAppSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const response = await axiosInstance.post("/application", appData, {
@@ -61,7 +113,28 @@ export default function Dashboard() {
     } catch {
       toast.error("An error occurred during application creation");
     }
-    setShowAppModal(false);
+    setShowAppCreateModal(false);
+  };
+
+  const handleUpdateAppSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const response = await axiosInstance.post(
+        "/update-application",
+        appUpdateData,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 200) {
+        fetchApplications();
+        toast.success("Application successfully created!");
+      }
+    } catch {
+      toast.error("An error occurred during application creation");
+    }
+    setShowAppCreateModal(false);
   };
 
   const fetchApplications = async (
@@ -135,11 +208,11 @@ export default function Dashboard() {
   return (
     <div className="grow min-h-screen p-4 flex flex-col">
       <Navbar />
-      <div className="flex md:flex-col p-6 mt-14">
+      <div className="flex lg:flex-col p-6 mt-14">
         <div>
           <div className="flex gap-10 items-center">
             <h1 className="text-2xl font-semibold">Dashboard</h1>
-            <Button onClick={() => setShowAppModal(true)}>
+            <Button onClick={() => setShowAppCreateModal(true)}>
               Create Application
             </Button>
           </div>
@@ -160,6 +233,10 @@ export default function Dashboard() {
                 },
                 setSelectedStatus(status, applicationID) {
                   handleUpdateStatus(status, applicationID);
+                },
+                setUpdateApplicationModal: (datas: ApplicationType) => {
+                  setAppUpdateData(datas);
+                  setShowAppUpdateModal(true);
                 },
                 currentSortBy: sortBy,
                 currentSortOrder: sortOrder,
@@ -216,16 +293,27 @@ export default function Dashboard() {
               setSelectedStatus={(status, applicationID) => {
                 handleUpdateStatus(status, applicationID);
               }}
+              setUpdateApplicationModal={(datas: ApplicationType) => {
+                setAppUpdateData(datas);
+                setShowAppUpdateModal(true);
+              }}
             />
           </div>
         </div>
       </div>
-      <ApplicationFormModal
-        showModal={showAppModal}
-        onClose={() => setShowAppModal(false)}
-        onSubmit={handleAppSubmit}
+      <CreateApplicationFormModal
+        showModal={showAppCreateModal}
+        onClose={() => setShowAppCreateModal(false)}
+        onSubmit={handleCreateAppSubmit}
         appData={appData}
-        onChange={handleAppChange}
+        onChange={handleCreateAppChange}
+      />
+      <UpdateApplicationFormModal
+        showModal={showAppUpdateModal}
+        onClose={() => setShowAppUpdateModal(false)}
+        onSubmit={handleUpdateAppSubmit}
+        appData={appUpdateData}
+        onChange={handleUpdateAppChange}
       />
     </div>
   );
