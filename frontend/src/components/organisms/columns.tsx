@@ -4,13 +4,12 @@ import { ApplicationType } from "@/types/applicationType";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowDown, ArrowUp, ExternalLink, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+// import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { StatusType } from "@/types/statusType";
@@ -27,34 +26,36 @@ export const columns = ({
   currentSortBy,
   currentSortOrder,
   setSelectedStatus,
+  setUpdateApplicationModal,
 }: {
   onSortChange: (sortBy: string, sortOrder: string) => void;
   currentSortBy: string;
   currentSortOrder: string;
   setSelectedStatus: (status: string, applicationID: string) => void;
+  setUpdateApplicationModal: (applicationData: ApplicationType) => void;
 }): ColumnDef<ApplicationType>[] => [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && "indeterminate")
+  //       }
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label="Select all"
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
     accessorKey: "Status",
     header: "Status",
@@ -192,7 +193,7 @@ export const columns = ({
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("Salary"));
       return (
-        <div className="text-right font-medium">
+        <div className="text-center font-medium">
           {new Intl.NumberFormat("fr-FR", {
             style: "currency",
             currency: "EUR",
@@ -239,7 +240,7 @@ export const columns = ({
   {
     accessorKey: "Actions",
     enableHiding: false,
-    cell: () => (
+    cell: ({ row }) => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -249,9 +250,16 @@ export const columns = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem>Update Status</DropdownMenuItem>
-          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() => {
+              console.log("TEST1");
+              setUpdateApplicationModal(row.original);
+            }}
+          >
+            Update Application
+          </DropdownMenuItem>
           <DropdownMenuItem>View application details</DropdownMenuItem>
+          <DropdownMenuItem>Delete application</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     ),
