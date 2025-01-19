@@ -27,12 +27,14 @@ export const columns = ({
   currentSortOrder,
   setSelectedStatus,
   setUpdateApplicationModal,
+  setDeleteApplicationModal,
 }: {
   onSortChange: (sortBy: string, sortOrder: string) => void;
   currentSortBy: string;
   currentSortOrder: string;
-  setSelectedStatus: (status: string, applicationID: string) => void;
+  setSelectedStatus: (status: number, applicationID: number) => void;
   setUpdateApplicationModal: (applicationData: ApplicationType) => void;
+  setDeleteApplicationModal: (applicationData: ApplicationType) => void;
 }): ColumnDef<ApplicationType>[] => [
   // {
   //   id: "select",
@@ -67,7 +69,7 @@ export const columns = ({
         <Select
           onValueChange={(value) => {
             (row.getValue("Status") as StatusType).Status = value;
-            setSelectedStatus(value, applicationID);
+            setSelectedStatus(Number(value), applicationID);
           }}
           defaultValue={status.ID.toString()}
         >
@@ -252,14 +254,19 @@ export const columns = ({
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
             onClick={() => {
-              console.log("TEST1");
               setUpdateApplicationModal(row.original);
             }}
           >
             Update Application
           </DropdownMenuItem>
           <DropdownMenuItem>View application details</DropdownMenuItem>
-          <DropdownMenuItem>Delete application</DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              setDeleteApplicationModal(row.original);
+            }}
+          >
+            Delete application
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     ),
