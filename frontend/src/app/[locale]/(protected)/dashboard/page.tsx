@@ -9,10 +9,13 @@ import { columns } from "@/components/organisms/columns";
 import { ApplicationType } from "@/types/applicationType";
 import CreateApplicationFormModal from "@/components/organisms/CreateApplicationFormModal";
 import UpdateApplicationFormModal from "@/components/organisms/UpdateApplicationFormModal";
+import DeleteApplicationFormModal from "@/components/organisms/DeleteApplicationFormModal";
 
 export default function Dashboard() {
   const [showAppCreateModal, setShowAppCreateModal] = useState<boolean>(false);
   const [showAppUpdateModal, setShowAppUpdateModal] = useState<boolean>(false);
+  const [showDeleteConfirmation, setShowAppDeleteModal] =
+    useState<boolean>(false);
   const [appData, setAppData] = useState<ApplicationType>({
     ID: 0,
     Url: "",
@@ -39,7 +42,19 @@ export default function Dashboard() {
       Status: "Applied",
     },
   });
-
+  const [appDeleteData, setAppDeleteData] = useState<ApplicationType>({
+    ID: 0,
+    Url: "",
+    Title: "",
+    Description: "",
+    Location: "",
+    Company: "",
+    Salary: 0,
+    Status: {
+      ID: 1,
+      Status: "Applied",
+    },
+  });
   const [applications, setApplications] = useState([]);
   const [pagination, setPagination] = useState({
     current_page: 1,
@@ -136,6 +151,27 @@ export default function Dashboard() {
     }
     setShowAppCreateModal(false);
   };
+  const handleDeleteAppSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(appDeleteData);
+    try {
+      const response = await axiosInstance.post(
+        "/delete-application",
+        appDeleteData,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 200) {
+        fetchApplications();
+        toast.success("Application successfully deleted!");
+      }
+    } catch {
+      toast.error("An error occurred during application supression");
+    }
+    setShowAppDeleteModal(false);
+  };
 
   const fetchApplications = async (
     page = 1,
@@ -178,15 +214,15 @@ export default function Dashboard() {
   }, []);
 
   const handleUpdateStatus = async (
-    statusID: string,
-    applicationID: string
+    statusID: number,
+    applicationID: number
   ) => {
     console.log(statusID);
     console.log(applicationID);
     try {
       const response = await axiosInstance.post(
         `/application/${applicationID}/status`,
-        { applicationID: Number(applicationID), statusID: Number(statusID) },
+        { applicationID: applicationID, statusID: statusID },
         { withCredentials: true }
       );
       if (response.status === 200) {
@@ -237,6 +273,10 @@ export default function Dashboard() {
                 setUpdateApplicationModal: (datas: ApplicationType) => {
                   setAppUpdateData(datas);
                   setShowAppUpdateModal(true);
+                },
+                setDeleteApplicationModal: (datas: ApplicationType) => {
+                  setAppDeleteData(datas);
+                  setShowAppDeleteModal(true);
                 },
                 currentSortBy: sortBy,
                 currentSortOrder: sortOrder,
@@ -297,6 +337,10 @@ export default function Dashboard() {
                 setAppUpdateData(datas);
                 setShowAppUpdateModal(true);
               }}
+              setDeleteApplicationModal={(datas: ApplicationType) => {
+                setAppDeleteData(datas);
+                setShowAppDeleteModal(true);
+              }}
             />
           </div>
         </div>
@@ -314,6 +358,12 @@ export default function Dashboard() {
         onSubmit={handleUpdateAppSubmit}
         appData={appUpdateData}
         onChange={handleUpdateAppChange}
+      />
+      <DeleteApplicationFormModal
+        showModal={showDeleteConfirmation}
+        onClose={() => setShowAppDeleteModal(false)}
+        onSubmit={handleDeleteAppSubmit}
+        appTitle={appDeleteData.Title}
       />
     </div>
   );
