@@ -33,8 +33,9 @@ interface DataTableProps<TData, TValue> {
     | ColumnDef<TData, TValue>[]
     | ((props: {
         onSortChange: (sortBy: string, sortOrder: string) => void;
-        setSelectedStatus: (status: string, applicationID: string) => void;
+        setSelectedStatus: (status: number, applicationID: number) => void;
         setUpdateApplicationModal: (applicationDatas: ApplicationType) => void;
+        setDeleteApplicationModal: (applicationDatas: ApplicationType) => void;
       }) => ColumnDef<TData, TValue>[]);
 
   data: TData[];
@@ -51,8 +52,9 @@ interface DataTableProps<TData, TValue> {
   titleSearchParam: string;
   statusFilterParam: string[];
   onStatusFilterChange: (statusFilterParam: string[]) => void;
-  setSelectedStatus: (status: string, applicationID: string) => void;
+  setSelectedStatus: (status: number, applicationID: number) => void;
   setUpdateApplicationModal: (applicationDatas: ApplicationType) => void;
+  setDeleteApplicationModal: (applicationDatas: ApplicationType) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -67,6 +69,7 @@ export function DataTable<TData, TValue>({
   onStatusFilterChange,
   setSelectedStatus,
   setUpdateApplicationModal,
+  setDeleteApplicationModal,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -78,7 +81,12 @@ export function DataTable<TData, TValue>({
 
   const columnDefs = Array.isArray(columns)
     ? columns
-    : columns({ onSortChange, setSelectedStatus, setUpdateApplicationModal });
+    : columns({
+        onSortChange,
+        setSelectedStatus,
+        setUpdateApplicationModal,
+        setDeleteApplicationModal,
+      });
 
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
