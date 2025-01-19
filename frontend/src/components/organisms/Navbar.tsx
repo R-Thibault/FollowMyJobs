@@ -5,8 +5,11 @@ import { useRouter } from "next/navigation";
 import axiosInstance from "@/lib/axiosInstance";
 import { Button } from "../ui/button";
 import LangageSelector from "../molecules/LangageSelector";
+import { CircleUserRound } from "lucide-react";
+import { useState } from "react";
 
 export default function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
   const t = useTranslations("navBar");
   const locale = useLocale();
   const router = useRouter();
@@ -14,7 +17,7 @@ export default function Navbar() {
   const handleLogout = async () => {
     try {
       const response = await axiosInstance.post(
-        "http://localhost:8080/logout",
+        "/logout",
         {},
         { withCredentials: true }
       );
@@ -29,26 +32,53 @@ export default function Navbar() {
   };
 
   return (
-    <div className="fixed top-4 left-6">
-      <div className="fixed right-6 top-8 z-50">
-        <LangageSelector />
-      </div>
+    <div className="fixed w-full left-0  shadow-sm z-50">
       {/* Navbar */}
-      <nav className="flex md:gap-8 gap-4 md:justify-center items-center md:mx-auto mb-8 sticky top-0 z-25 py-4 backdrop-blur-sm">
-        {/* Logo */}
-        <div className="text-lg font-bold">JobApp Manager</div>
-        {/* Burger Menu Placeholder */}
-        <div className="md:hidden">
-          <button className="text-2xl">&#9776;</button>
+      <nav className="flex items-center justify-between px-6 py-4 backdrop-blur-sm">
+        {/* Logo (Left-aligned) */}
+        <div className="flex items-center space-x-4 text-lg font-bold">
+          <span>JobApp Manager</span>
+          <Link href={`/${locale}/dashboard`} className="hidden md:block">
+            {t("dashboard")}
+          </Link>
         </div>
-        {/* Desktop Nav Links */}
-        <div className="hidden md:flex text-lg space-x-4 justify-center items-center">
-          <Link href={`/${locale}/dashboard`}>Dashboard</Link>
-          <Link href={`/${locale}/my-profile`}>My Profile</Link>
-          <Link href={`/${locale}/settings`}>Settings</Link>
+
+        {/* Desktop Nav Links (Hidden on Mobile) */}
+        <div className="hidden md:flex items-center space-x-4">
+          <Link
+            href={`/${locale}/my-profile`}
+            className="bg-gray-200 rounded-full p-2 hover:bg-gray-400 hover:scale-110"
+          >
+            <CircleUserRound />
+          </Link>
           <Button onClick={handleLogout}>Logout</Button>
+          <LangageSelector />
         </div>
+
+        {/* Burger Menu Button (Visible on Mobile) */}
+        <button
+          className="md:hidden text-2xl"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          &#9776;
+        </button>
       </nav>
+
+      {/* Mobile Nav Menu (Toggles on click) */}
+      {menuOpen && (
+        <div className="md:hidden flex flex-col items-center  shadow-md py-4">
+          <Link href={`/${locale}/dashboard`} className="py-2">
+            {t("dashboard")}
+          </Link>
+          <Link href={`/${locale}/my-profile`} className="py-2">
+            My Profile
+          </Link>
+          <Button onClick={handleLogout} className="py-2">
+            Logout
+          </Button>
+          <LangageSelector />
+        </div>
+      )}
     </div>
   );
 }

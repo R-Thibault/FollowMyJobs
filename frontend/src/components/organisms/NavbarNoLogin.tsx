@@ -21,8 +21,8 @@ export default function NavbarNoLogin() {
         </div>
         {/* Desktop Nav Links */}
         <div className="hidden md:flex text-lg space-x-4 justify-center items-center">
-          <Link href={`/${locale}/login`}>{t("nav.getStarted")}</Link>
-          <Link href="#">{t("nav.contact")}</Link>
+          <Link href={`/${locale}/login`}>{t("getStarted")}</Link>
+          <Link href="#">{t("contact")}</Link>
         </div>
       </nav>
     </div>

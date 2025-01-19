@@ -5,7 +5,9 @@
   "navBar": {
     "home": "Accueil",
     "getStarted": "Commencer",
-    "contact": "Contact"
+    "contact": "Contact",
+    "dashboard": "Tableau de bord",
+    "myProfile": "Mon profile"
   },
   "homePage": {
     "title": "Organisez vos candidatures sans effort",
