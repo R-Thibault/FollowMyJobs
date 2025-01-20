@@ -12,7 +12,14 @@
   "homePage": {
     "title": "Organize Your Job Applications Effortlessly",
     "description": "Stay on top of your job search with ease and efficiency.",
-    "cta": "Get Started Now"
+    "cta": "Get Started Now",
+    "learnMore": "Learn More",
+    "feature1Title": "Boost Your Productivity",
+    "feature1Description": "Track and manage your job applications in one place.",
+    "feature2Title": "Smart Tracking",
+    "feature2Description": "Stay organized with a clear overview of all your job applications.",
+    "feature3Title": "Fast and Intuitive",
+    "feature3Description": "Minimalist design with powerful features for efficiency."
   },
   "loginPage": {
     "welcomeTitle": "Welcome to FollowMyJobs!",
@@ -63,11 +70,14 @@
     "lastName": "Last Name",
     "passwordLabel": "Password",
     "confirmPasswordLabel": "Confirm Password",
+
     "errorEmailInput": "Please enter a valid email address.",
-    "errorSignUpMessage": "An error occurred during registration. Please try again later.",
+    "errorPasswordRequirement": "The password does not meet the security criteria.",
+    "errorSignUpMessage": "An error occurred during sign-up. Please try again later.",
     "errorOTPEmail": "An error occurred while sending the email. Please try again later.",
     "errorOTPMessage": "Incorrect OTP code. Please try again.",
     "errorConfirmPasswordMessage": "The password and confirmation do not match.",
+
     "passwordRequirement": {
       "length": "At least 8 characters.",
       "uppercase": "At least one uppercase letter.",

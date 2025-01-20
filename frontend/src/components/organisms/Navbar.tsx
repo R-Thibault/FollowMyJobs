@@ -37,7 +37,7 @@ export default function Navbar() {
       <nav className="flex items-center justify-between px-6 py-4 backdrop-blur-sm">
         {/* Logo (Left-aligned) */}
         <div className="flex items-center space-x-4 text-lg font-bold">
-          <span>JobApp Manager</span>
+          <Link href={`/${locale}/dashboard`}>JobApp Manager</Link>
           <Link href={`/${locale}/dashboard`} className="hidden md:block">
             {t("dashboard")}
           </Link>
