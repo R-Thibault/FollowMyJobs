@@ -44,7 +44,7 @@ func (r *ApplicationRepository) GetApplicationByID(applicationID uint) (*models.
 		return nil, errors.New("database connection is nil")
 	}
 	var application models.Application
-	result := r.db.Where("id = ?", applicationID).First(&application)
+	result := r.db.Preload("Status").Where("id = ?", applicationID).First(&application)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return nil, gorm.ErrRecordNotFound
