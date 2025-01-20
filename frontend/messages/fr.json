@@ -12,7 +12,14 @@
   "homePage": {
     "title": "Organisez vos candidatures sans effort",
     "description": "Restez au top de votre recherche d'emploi avec facilité et efficacité.",
-    "cta": "Commencez maintenant"
+    "cta": "Commencez maintenant",
+    "learnMore": "En savoir plus",
+    "feature1Title": "Boostez votre productivité",
+    "feature1Description": "Suivez et gérez vos candidatures en un seul endroit.",
+    "feature2Title": "Un suivi intelligent",
+    "feature2Description": "Gardez une vue d’ensemble claire et suivez chaque candidature facilement.",
+    "feature3Title": "Rapide et intuitif",
+    "feature3Description": "Un design minimaliste avec des fonctionnalités puissantes pour plus d'efficacité."
   },
   "loginPage": {
     "welcomeTitle": "Bienvenue sur FollowMyJobs!",
@@ -65,11 +72,14 @@
     "lastName": "Nom de famille",
     "passwordLabel": "Mot de passe",
     "confirmPasswordLabel": "Confirmez votre mot de passe",
+
     "errorEmailInput": "Veuillez saisir une adresse email valide.",
+    "errorPasswordRequirement": "Le mot de passe ne respecte pas les critères de sécurité.",
     "errorSignUpMessage": "Une erreur s'est produite durant l'inscription. Veuillez réessayer ultérieurement.",
     "errorOTPEmail": "Une erreur est survenue lors de l'envoi de l'email. Veuillez réessayer ultérieurement.",
     "errorOTPMessage": "Code OTP incorrect. Veuillez réessayer.",
     "errorConfirmPasswordMessage": "Le mot de passe et la confirmation ne correspondent pas.",
+
     "passwordRequirement": {
       "length": "Au moins 8 caractères.",
       "uppercase": "Au moins une lettre majuscule.",

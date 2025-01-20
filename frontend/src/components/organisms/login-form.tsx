@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,17 +16,13 @@ import React, { useState } from "react";
 import Link from "next/link";
 import axiosInstance from "@/lib/axiosInstance";
 import { toast } from "react-hot-toast";
+import axios from "axios";
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+export function LoginForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [errorMessageLogin, setErrorMessageLogin] = useState<boolean>(false);
-  const [errorMessageUnexpected, setErrorMessageUnexpected] =
-    useState<boolean>(false);
-
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   // Use for translation
@@ -37,30 +32,33 @@ export function LoginForm({
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null); // Reset previous error message
     try {
       const response = await axiosInstance.post(
         "/login",
-        {
-          email: email,
-          password: password,
-        },
+        { email, password },
         { withCredentials: true }
       );
       if (response.status === 200) {
         setTimeout(() => {
           router.push(`/${locale}/dashboard`);
         }, 100);
-      } else {
-        setErrorMessageUnexpected(true);
-        toast.error(t("errorMessageUnexpected"));
       }
-    } catch {
-      setErrorMessageLogin(true);
-      toast.error(t("errorMessageLogin"));
+    } catch (error) {
+      if (
+        axios.isAxiosError(error) &&
+        error.response &&
+        error.response.status === 401
+      ) {
+        setErrorMessage(t("errorMessageLogin"));
+      } else {
+        setErrorMessage(t("errorMessageUnexpected"));
+      }
+      toast.error(t("errorMessageUnexpected"));
     }
   };
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div>
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">{t("title")}</CardTitle>
@@ -78,6 +76,8 @@ export function LoginForm({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  autoComplete="email"
+                  aria-invalid={errorMessage ? "true" : "false"}
                 />
               </div>
               <div className="grid gap-2">
@@ -85,26 +85,32 @@ export function LoginForm({
                   <Label htmlFor="password">{t("passwordLabel")}</Label>
                   <Link
                     href={`/${locale}/forgot-password`}
-                    className="ml-auto inline-block text-sm  border-none underline underline-offset-4 hover:bg-white"
+                    className="ml-auto text-sm text-blue-600 hover:text-blue-800 focus-visible:ring-2 focus-visible:ring-blue-500"
                   >
                     {t("forgotPassword")}
                   </Link>
                 </div>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    autoComplete="current-password"
+                    aria-invalid={errorMessage ? "true" : "false"}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute inset-y-0 right-2 flex items-center px-2 text-gray-500"
+                  >
+                    {showPassword ? "👁️" : "🔒"}
+                  </button>
+                </div>
               </div>
-              {errorMessageLogin && (
-                <p className="text-red-500 mt-2">{t("errorMessageLogin")}</p>
-              )}
-              {errorMessageUnexpected && (
-                <p className="text-red-500 mt-2">
-                  {t("errorMessageUnexpected")}
-                </p>
+              {errorMessage && (
+                <p className="text-red-500 mt-2">{errorMessage}</p>
               )}
               <Button type="submit" className="w-full">
                 {t("loginbtn")}
