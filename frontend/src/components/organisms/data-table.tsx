@@ -27,6 +27,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ApplicationType } from "@/types/applicationType";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { useLocale } from "next-intl";
 
 interface DataTableProps<TData, TValue> {
   columns:
@@ -36,9 +37,11 @@ interface DataTableProps<TData, TValue> {
         setSelectedStatus: (status: number, applicationID: number) => void;
         setUpdateApplicationModal: (applicationDatas: ApplicationType) => void;
         setDeleteApplicationModal: (applicationDatas: ApplicationType) => void;
+        locale: string;
       }) => ColumnDef<TData, TValue>[]);
 
   data: TData[];
+
   pagination: {
     current_page: number;
     page_size: number;
@@ -75,10 +78,10 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const locale = useLocale();
   const [searchValue, setSearchValue] =
     React.useState<string>(titleSearchParam);
   const [filtersOpen, setFiltersOpen] = React.useState<boolean>(false); // Mobile filter toggle
-
   const columnDefs = Array.isArray(columns)
     ? columns
     : columns({
@@ -86,6 +89,7 @@ export function DataTable<TData, TValue>({
         setSelectedStatus,
         setUpdateApplicationModal,
         setDeleteApplicationModal,
+        locale: locale,
       });
 
   const [columnVisibility, setColumnVisibility] =

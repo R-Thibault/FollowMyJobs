@@ -10,10 +10,12 @@ import { ApplicationType } from "@/types/applicationType";
 import CreateApplicationFormModal from "@/components/organisms/CreateApplicationFormModal";
 import UpdateApplicationFormModal from "@/components/organisms/UpdateApplicationFormModal";
 import DeleteApplicationFormModal from "@/components/organisms/DeleteApplicationFormModal";
+import { useLocale } from "next-intl";
 
 export default function Dashboard() {
   const [showAppCreateModal, setShowAppCreateModal] = useState<boolean>(false);
   const [showAppUpdateModal, setShowAppUpdateModal] = useState<boolean>(false);
+  const locale = useLocale();
   const [showDeleteConfirmation, setShowAppDeleteModal] =
     useState<boolean>(false);
   const [appData, setAppData] = useState<ApplicationType>({
@@ -280,6 +282,7 @@ export default function Dashboard() {
                 },
                 currentSortBy: sortBy,
                 currentSortOrder: sortOrder,
+                locale: locale,
               })}
               data={applications}
               pagination={pagination}

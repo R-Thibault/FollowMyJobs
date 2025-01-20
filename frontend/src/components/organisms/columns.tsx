@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Link from "next/link";
 
 export const columns = ({
   onSortChange,
@@ -28,6 +29,7 @@ export const columns = ({
   setSelectedStatus,
   setUpdateApplicationModal,
   setDeleteApplicationModal,
+  locale,
 }: {
   onSortChange: (sortBy: string, sortOrder: string) => void;
   currentSortBy: string;
@@ -35,6 +37,7 @@ export const columns = ({
   setSelectedStatus: (status: number, applicationID: number) => void;
   setUpdateApplicationModal: (applicationData: ApplicationType) => void;
   setDeleteApplicationModal: (applicationData: ApplicationType) => void;
+  locale: string;
 }): ColumnDef<ApplicationType>[] => [
   // {
   //   id: "select",
@@ -242,33 +245,41 @@ export const columns = ({
   {
     accessorKey: "Actions",
     enableHiding: false,
-    cell: ({ row }) => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem
-            onClick={() => {
-              setUpdateApplicationModal(row.original);
-            }}
-          >
-            Update Application
-          </DropdownMenuItem>
-          <DropdownMenuItem>View application details</DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => {
-              setDeleteApplicationModal(row.original);
-            }}
-          >
-            Delete application
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
+    cell: ({ row }) => {
+      return (
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => {
+                  setUpdateApplicationModal(row.original);
+                }}
+              >
+                Update Application
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href={`/${locale}/application/${row.original.ID}`}>
+                  View application details
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  setDeleteApplicationModal(row.original);
+                }}
+              >
+                Delete application
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </>
+      );
+    },
   },
 ];
