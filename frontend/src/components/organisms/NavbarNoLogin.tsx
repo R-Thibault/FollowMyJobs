@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import LangageSelector from "../molecules/LangageSelector";
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
@@ -6,25 +6,55 @@ import Link from "next/link";
 export default function NavbarNoLogin() {
   const t = useTranslations("navBar");
   const locale = useLocale();
+  const [isOpen, setIsOpen] = useState(false); // State for mobile menu
+
   return (
-    <div className="fixed top-4 left-6">
-      <div className="fixed right-6 top-8 z-50">
-        <LangageSelector />
-      </div>
-      {/* Navbar */}
-      <nav className="flex md:gap-8 gap-4 md:justify-center items-center md:mx-auto mb-8 sticky top-0 z-25 py-4 backdrop-blur-sm">
+    <header className="w-full py-4 px-6 bg-white bg-opacity-70 backdrop-blur-md fixed top-0 left-0 right-0 z-50 shadow-sm">
+      <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
-        <div className="text-lg font-bold">JobApp Manager</div>
-        {/* Burger Menu Placeholder */}
-        <div className="md:hidden">
-          <button className="text-2xl">&#9776;</button>
+        <div className="text-lg font-bold text-gray-800">
+          <Link href={`/${locale}`}>JobApp Manager</Link>
         </div>
+
         {/* Desktop Nav Links */}
-        <div className="hidden md:flex text-lg space-x-4 justify-center items-center">
-          <Link href={`/${locale}/login`}>{t("getStarted")}</Link>
-          <Link href="#">{t("contact")}</Link>
+        <nav className="hidden md:flex space-x-6 text-lg">
+          <Link href={`/${locale}/login`} className="hover:text-blue-600">
+            {t("getStarted")}
+          </Link>
+          <Link href="#" className="hover:text-blue-600">
+            {t("contact")}
+          </Link>
+        </nav>
+
+        {/* Language Selector */}
+        <div className="hidden md:block">
+          <LangageSelector />
         </div>
-      </nav>
-    </div>
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="md:hidden text-3xl focus:outline-none"
+          aria-label="Toggle navigation menu"
+        >
+          {isOpen ? "✖" : "☰"}
+        </button>
+      </div>
+
+      {/* Mobile Dropdown Menu */}
+      {isOpen && (
+        <nav className="md:hidden absolute top-16 left-0 w-full bg-white shadow-md flex flex-col items-center py-4 space-y-4">
+          <Link
+            href={`/${locale}/login`}
+            className="hover:text-blue-600 text-lg"
+          >
+            {t("getStarted")}
+          </Link>
+          <Link href="#" className="hover:text-blue-600 text-lg">
+            {t("contact")}
+          </Link>
+          <LangageSelector />
+        </nav>
+      )}
+    </header>
   );
 }
